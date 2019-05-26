@@ -96,8 +96,8 @@ class Polygon(Entity):
         #print('ed', _shoelace_area(cor + [self._points[-1], self._points[0]]), moi)
         return moi
 
+    @property
     def set_radius(self):
-        n_points = []
         r = 0
         for point in self._points:
             x, y = rotate_point_about_origin(point, self.o)

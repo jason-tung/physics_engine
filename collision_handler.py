@@ -38,6 +38,7 @@ class Handler:
                 apply[obj1][obj2] = self.compute(obj1, obj2)
                 apply[obj2][obj1] = self.compute(obj2, obj1)
 
+    @staticmethod
     def is_colliding(self, obj):
         com1 = self.x,self.y
         com2 = obj.x, obj.y
