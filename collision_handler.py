@@ -1,20 +1,8 @@
 from collections import deque, defaultdict
 from heapq import *
 from config import collide_epsilon
+import utils
 
-
-
-def line_intersection(line1, line2):
-    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1]) #Typo was here
-
-    def det(a, b):
-        return a[0] * b[1] - a[1] * b[0]
-
-    div = det(xdiff, ydiff)
-    if div == 0:
-       return True
-    return False
 
 class Handler:
 
@@ -58,6 +46,6 @@ class Handler:
             l1 = [pts1[i1],pts1[i1+1]]
             for i2 in range(len(pts2)):
                 l2 = [pts2[i2], pts2[i2 + 1]]
-                if line_intersection(l1,l2):
+                if utils.intersect(l1[0],l1[1],l2[0],l2[1]):
                     return True
         return False
