@@ -43,14 +43,17 @@ class Handler:
             return False
         pts1 = self.points
         pts2 = obj.points
-        print("pts1",pts1)
+        print("pts1", pts1)
+        # print("pts1 (_points)", self._points)
         print("x,y", com1)
         for i1 in range(len(pts1)):
             l1 = [pts1[i1],pts1[i1+1]]
             print("l1",l1)
             for i2 in range(len(pts2)):
                 l2 = [pts2[i2], pts2[i2 + 1]]
+                print("l2", l2)
                 inters = utils.line_intersection((l1[0],l1[1]),(l2[0],l2[1]))
+                print("inters",inters)
                 if inters:
                     return inters
         return False
