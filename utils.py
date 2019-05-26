@@ -66,6 +66,22 @@ def intersect(A,B,C,D):
 
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B ,C) != ccw(A, B ,D)
 
+#return true if intersecting [x1,y1,x2,y2],[x1,y1,x2,y2]
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1]) #Typo was here
+
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    if div == 0:
+       return False
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+    return x, y
+
 
 def find_moment_of_inertia_triangle(points, mass):
     # triangle -> collection of N rectangular plates

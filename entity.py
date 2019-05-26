@@ -61,6 +61,7 @@ class Polygon(Entity):
 
         self._points = [[x - self.x, y - self.y] for x, y in points]
         self.i = self.moment_of_inertia_about_center()
+        self.radius = self.set_radius()
 
     def center_of_mass(self, points):
         # break into many triangles
@@ -95,6 +96,17 @@ class Polygon(Entity):
         #print('ed', _shoelace_area(cor + [self._points[-1], self._points[0]]), moi)
         return moi
 
+    def set_radius(self):
+        r = 0
+        for point in self._points:
+            # x, y = rotate_point_about_origin(point, self.o)
+            x,y = point
+            x += self.x
+            y += self.y
+            rt = ((self.x - x) ** 2 + (self.y - y) ** 2) ** .5
+            r = max(r, rt)
+        return r
+
 
     @property
     def points(self):
@@ -113,7 +125,7 @@ class Polygon(Entity):
 
         self.w += self.a / tick_speed
 
-if __name__ == '__main__':
+if __name__ ==  '__main__':
 
     points = []
     radius = 10
