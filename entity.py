@@ -97,15 +97,7 @@ class Polygon(Entity):
         return moi
 
     def set_radius(self):
-        r = 0
-        for point in self._points:
-            # x, y = rotate_point_about_origin(point, self.o)
-            x,y = point
-            x += self.x
-            y += self.y
-            rt = ((self.x - x) ** 2 + (self.y - y) ** 2) ** .5
-            r = max(r, rt)
-        return r
+        return max((i**2 + j**2)**0.5 for i, j in self._points)
 
 
     @property
