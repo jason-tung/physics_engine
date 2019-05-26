@@ -1,0 +1,10 @@
+State:
+
+
+Assume we have residual forces from the last iteration
+
+1. Apply all the residual forces (update acceleration + angular acceleration)
+2. Use accelerations to update velocity
+3. Attempt to update position -> check for collision
+4. Add residual forces after collision
+5. Add other forces

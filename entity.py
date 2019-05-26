@@ -10,15 +10,15 @@ class Entity(object):
         self.x = None
         self.y = None
 
-        self.vx = None
-        self.vy = None
+        self.vx = 0
+        self.vy = 0
 
-        self.ax = None
-        self.ay = None
+        self.ax = 0
+        self.ay = 0
 
-        self.o = None  # theta
-        self.w = None  # omega
-        self.a = None  # alpha
+        self.o = 0  # theta
+        self.w = 0  # omega
+        self.a = 0  # alpha
         self.static = False
 
         self.su = None  # static friction
@@ -29,6 +29,16 @@ class Entity(object):
 
         # determine if handler should process these movements
         self.handler_update = False
+
+    def tick_velocities(self):
+        self.vx += self.ax
+        self.vy += self.ay
+        self.w += self.a
+
+    def tick_movement_no_collisions(self):
+        self.x += self.vx
+        self.y += self.vy
+        self.o += self.w
 
     def load(self, d):
 

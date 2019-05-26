@@ -61,22 +61,29 @@ def _build_triangle_point_mass(points):
 
 # Return true if line segments AB and CD intersect
 def intersect(A,B,C,D):
+
     def ccw(A, B, C):
-        return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+        return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
 
-    return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B ,C) != ccw(A, B ,D)
+    return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
 
-#return true if intersecting [x1,y1,x2,y2],[x1,y1,x2,y2]
-def line_intersection(line1, line2):
+
+# return true if intersecting [x1,y1,x2,y2],[x1,y1,x2,y2]
+def segment_intersection(line1, line2):
+
+    if not intersect(*line1, *line2):
+        return False
+
     xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1]) #Typo was here
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
 
     def det(a, b):
         return a[0] * b[1] - a[1] * b[0]
 
     div = det(xdiff, ydiff)
     if div == 0:
-       return False
+        return False
+
     d = (det(*line1), det(*line2))
     x = det(d, xdiff) / div
     y = det(d, ydiff) / div
@@ -88,7 +95,7 @@ def find_moment_of_inertia_triangle(points, mass):
     # I_plate = 1/12 * M(a^2 + b^2)
     # assume first point will be the central axis
     # break into moment_of_inertia_plates and then use parallel axis theorem
-    #print(points)
+    # print(points)
     area = _shoelace_area(points)
 
     base = distance(points[1], points[2])
