@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4e2967b-9924-46a4-8af5-09f3bafc2a65" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/collision_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/collision_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testy.py" beforeDir="false" afterPath="$PROJECT_DIR$/testy.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,7 +27,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="collision_handler.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="collision_handler.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/collision_handler.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="512">
@@ -52,11 +51,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testy.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="testy.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="20" lean-forward="true" selection-start-column="20" selection-end-column="20" />
+            <state relative-caret-position="285">
+              <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -100,9 +102,9 @@
         <option value="$PROJECT_DIR$/templates.py" />
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/entity.py" />
-        <option value="$PROJECT_DIR$/testy.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/collision_handler.py" />
+        <option value="$PROJECT_DIR$/testy.py" />
       </list>
     </option>
   </component>
@@ -367,13 +369,6 @@
     <entry file="file://$PROJECT_DIR$/templates.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/testy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="20" lean-forward="true" selection-start-column="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/entity.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="35">
@@ -400,6 +395,16 @@
           <caret line="51" column="39" selection-start-line="51" selection-start-column="39" selection-end-line="51" selection-end-column="39" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
