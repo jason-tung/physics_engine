@@ -42,15 +42,18 @@ class Handler:
     def is_colliding(self, obj):
         com1 = self.x,self.y
         com2 = obj.x, obj.y
-        if distance(com1, com2) > self.radius + obj.radius:
+        if utils.distance(com1, com2) > self.radius + obj.radius:
             return False
-        pts1 = self.points()
-        pts2 = obj.points()
+        pts1 = self.points
+        pts2 = obj.points
+        print("pts1",pts1)
+        print("x,y", com1)
         for i1 in range(len(pts1)):
             l1 = [pts1[i1],pts1[i1+1]]
+            print("l1",l1)
             for i2 in range(len(pts2)):
                 l2 = [pts2[i2], pts2[i2 + 1]]
-                inters = utils.intersect(l1[0],l1[1],l2[0],l2[1])
+                inters = utils.line_intersection((l1[0],l1[1]),(l2[0],l2[1]))
                 if inters:
                     return inters
         return False
