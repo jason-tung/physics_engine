@@ -39,6 +39,7 @@ class Handler:
         com2 = obj2.x, obj2.y
         if distance(com1, com2) > obj1.radius + obj2.radius:
             return False
+<<<<<<< HEAD
         pts1 = obj1.points
         pts2 = obj2.points
         # print("pts1",pts1)
@@ -55,3 +56,23 @@ class Handler:
                 if inters:
                     intersections.append(inters)
         return intersections
+=======
+        pts1 = self.points
+        pts2 = obj.points
+        # print("pts1", pts1)
+        # print("pts1 (_points)", self._points)
+        # print("x,y", com1)
+        ary = []
+        for i1 in range(len(pts1)):
+            l1 = [pts1[i1],pts1[(i1+1)%len(pts1)]]
+            # print("l1",l1)
+            for i2 in range(len(pts2)):
+                l2 = [pts2[i2], pts2[(i2+1)%len(pts2)]]
+                # if l1 == [[4,0],[4,4]]:
+                #     print("---")
+                #     print("l1", l1)
+                #     print("l2", l2)
+                if utils.intersect(l1[0], l1[1], l2[0], l2[1]):
+                    ary.append(utils.line_intersection((l1[0], l1[1]), (l2[0], l2[1])))
+        return ary if len(ary) > 0 else False
+>>>>>>> 7be688d775b52e0bb36bca2b4cd2e6ce79ffdb39
