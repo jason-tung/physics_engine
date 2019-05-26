@@ -88,7 +88,7 @@ class Polygon(Entity):
             triangle = cor + self._points[i:i+2]
             area = _shoelace_area(triangle)
             moi += find_moment_of_inertia_triangle(cor + self._points[i:i+2], self.m * area / self.area)
-            print(triangle, moi)
+          #  print(triangle, moi)
 
         moi += find_moment_of_inertia_triangle(cor + [self._points[-1], self._points[0]],
                                                self.m * _shoelace_area(cor + [self._points[-1], self._points[0]]) / self.area)
@@ -103,7 +103,7 @@ class Polygon(Entity):
             x, y = rotate_point_about_origin(point, self.o)
             x += self.x
             y += self.y
-            n_points.append(point)
+            n_points.append([x, y])
         return n_points
 
     def tick_forces(self):
@@ -122,11 +122,13 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
     for theta in range(0, 360, 360//n_sides):
-        points.append([cos(pi/180 * theta) * radius, sin(pi/180 * theta) * radius])
+        points.append([cos(pi/180 * theta) * radius + 10, sin(pi/180 * theta) * radius + 10])
     #print(points)
     plt.plot(*zip(*points))
     plt.show()
     #print(points)
     p = Polygon(1, points)
+    p.o = 0
+    print(p.points)
     #p = Polygon(1, [[0, 0], [0, 1], [1, 1], [1, 0]])
     print(p.x, p.y, p.area, p.i)

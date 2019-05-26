@@ -15,9 +15,6 @@ class Handler:
         self.tick = 0
 
 
-
-
-
     @staticmethod
     def compute(obj1, obj2):
         # return the forces acted on object one by object two
