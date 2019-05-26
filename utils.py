@@ -60,9 +60,14 @@ def _build_triangle_point_mass(points):
 
 
 # Return true if line segments AB and CD intersect
+# def intersect(A,B,C,D):
+#     def ccw(A, B, C):
+#         return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+#
+#     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B ,C) != ccw(A, B ,D)
 def intersect(A,B,C,D):
     def ccw(A, B, C):
-        return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+        return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
 
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B ,C) != ccw(A, B ,D)
 
@@ -73,7 +78,7 @@ def line(p1, p2):
     C = (p1[0]*p2[1] - p2[0]*p1[1])
     return A, B, -C
 
-def line_intersect(l1, l2):
+def line_intersection(l1, l2):
     L1,L2 = line(l1[0], l1[1]),line(l2[0], l2[1])
     D  = L1[0] * L2[1] - L1[1] * L2[0]
     Dx = L1[2] * L2[1] - L1[1] * L2[2]
