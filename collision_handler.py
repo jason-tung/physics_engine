@@ -46,12 +46,16 @@ class Handler:
         # print("pts1", pts1)
         # print("pts1 (_points)", self._points)
         # print("x,y", com1)
-        for i1 in range(len(pts1)-1):
-            l1 = [pts1[i1],pts1[i1+1]]
+        ary = []
+        for i1 in range(len(pts1)):
+            l1 = [pts1[i1],pts1[(i1+1)%len(pts1)]]
             # print("l1",l1)
-            for i2 in range(len(pts2)-1):
-                l2 = [pts2[i2], pts2[i2 + 1]]
-                # print("l2", l2)
+            for i2 in range(len(pts2)):
+                l2 = [pts2[i2], pts2[(i2+1)%len(pts2)]]
+                # if l1 == [[4,0],[4,4]]:
+                #     print("---")
+                #     print("l1", l1)
+                #     print("l2", l2)
                 if utils.intersect(l1[0], l1[1], l2[0], l2[1]):
-                    return utils.line_intersection((l1[0], l1[1]), (l2[0], l2[1]))
-        return False
+                    ary.append(utils.line_intersection((l1[0], l1[1]), (l2[0], l2[1])))
+        return ary if len(ary) > 0 else False

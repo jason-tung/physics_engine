@@ -6,7 +6,7 @@ from collision_handler import *
 hand = Handler()
 
 p1 = Polygon(0, [(0,0),(4,0),(4,4),(0,4)])
-p2 = Polygon(0, [(2,3.5),(-1,9),(2,9),(5,6)])
+p2 = Polygon(0, [(2,2),(-1,6),(2,9),(5,6)])
 p3 = Polygon(0, [(2,5),(-1,9),(2,9),(5,6)])
 p1.o,p2.o, p3.o = 0,0,0
 
