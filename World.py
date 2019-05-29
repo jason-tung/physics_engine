@@ -4,6 +4,8 @@ from math import sin, cos
 from entity import Polygon
 from utils import distance
 from heapq import *
+from config import AUTO_ZOOM
+from math import acos
 
 
 class Quantity:
@@ -25,32 +27,44 @@ class Quantity:
 
 class Force(Quantity):
 
-    def __init__(self, object: Polygon, fx, fy, n_ticks):
+    def __init__(self, object: Polygon, force, n_ticks):
+        """
+        :param object:
+        :param n_ticks:
+        :param fx:
+        :param fy:
+        :param magnitude:
+        :param target:
+        """
         if n_ticks == 0: raise ValueError("duration of force cannot be 0")
         super(Force, self).__init__()
         self.obj = object
-        self.fx = fx
-        self.fy = fy
+
+        if hasattr(force, '__call__'):
+            self.frc_func = force
+        else:
+            self.frc_func = lambda: force
+
         self.n_ticks = n_ticks
         self.ticked = False
 
     def apply(self):
         # newton's second law
-        if not self.n_ticks:
+        fx, fy = self.frc_func()
+        if not self.ticked:
+            self.ticked = True
+        else:
             self.obj.ax -= self.ax
             self.obj.ay -= self.ay
-            return False
-        if not self.ticked:
-            m = self.obj.m
+        if not self.n_ticks: return False
 
-            self.ax = self.fx / m
-            self.ay = self.fy / m
+        m = self.obj.m
 
-            self.obj.ax += self.ax
-            self.obj.ay +=self. ay
+        self.ax = fx / m
+        self.ay = fy / m
 
-            self.ticked = True
-
+        self.obj.ax += self.ax
+        self.obj.ay += self.ay
         self.n_ticks -=1
         return True
 
@@ -94,16 +108,18 @@ class World:
         self.heap = []
         self.tick = 0
 
-    def add_heap_unit(self, quantity:Quantity):
-        t = self.tick
-        heappush(self.heap, (t + 1, quantity))
+    def add_heap_unit(self, quantity: Quantity):
+        heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
 
     def tick_forces(self):
-        t = self.tick
+
+        for _, i in self.heap:
+            i.apply()
+            print(i.__dict__)
+
         while self.heap and self.heap[0][0] <= self.tick:
+            print(self.heap[0][0], self.tick)
             _, quantity = heappop(self.heap)
-            if quantity.apply():
-                heappush(self.heap, (t + 1, quantity))
 
     def tick_velocities(self):
         for i in self.objects:
@@ -112,9 +128,6 @@ class World:
     def add_object(self, obj):
         self.objects.append(obj)
 
-    def add_quantity(self, quantity):
-        heappush(self.heap, (self.tick + 1, quantity))
-
     def rebuild_canvas(self):
         self.canvas.build(self.objects)
 
@@ -122,27 +135,45 @@ class World:
         while True:
             self.tick_forces()
             self.tick_velocities()
+
+            if AUTO_ZOOM: self.canvas.build(self.objects)
             for i in self.objects:
+                if i.m == 1000:
+                    pass
+                    # print(i.ax, i.ay)
+
                 i.tick_movement_no_collisions()
             self.canvas.update()
             self.tick += 1
 
+
 if __name__ == '__main__':
+    from gravity import gravity
     w = World()
     p1 = Polygon(1000, [(0, 0), (4, 0), (4, 4), (0, 4)])
-    p2 = Polygon(1000, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
+    p2 = Polygon(10**9, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
+    points = []
+    radius = 3
+    n_sides = 300
+    from math import pi
+    for theta in range(0, 360, 360//n_sides):
+        points.append([cos(pi/180 * theta) * radius + 10, sin(pi/180 * theta) * radius + 10])
 
-    f = Force(p1, 10, 5, 10)
+    p2 = Polygon(10**10, points)
+
+
+    #p3 = Polygon(1000000000000, [(20, 5), (21, 5), (21, 6), (20, 6)])
     t = Torque(p1, 10, 1, 10)
-    f1 = Force(p1, 10, -2.5, 20)
-    t1 = Torque(p1, 5, -1, 10)
-    w.add_quantity(f)
-    w.add_quantity(t)
-    w.add_quantity(f1)
-    w.add_quantity(t1)
-    p1.o, p2.o = 0, 0
+    g = gravity(p1, p2)
+    p1.vx = 0.25
+    w.add_heap_unit(g)
+    w.add_heap_unit(t)
     for i in [p1, p2]:
         w.add_object(i)
+    print(p1.points)
+    print(p2.points)
+    print("what?")
     w.rebuild_canvas()
     w.mainloop()
 
+    p1.vx = 0.015

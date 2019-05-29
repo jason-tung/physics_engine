@@ -38,15 +38,15 @@ class Canvas:
         scale_2 = (self.h - 20) / size_h
 
         self.scale = min(scale_1, scale_2)
-        print(l, r, d, u)
+        #print(l, r, d, u)
 
 
         def lin_transform(a, b):
-            print(a, b)
+        #    print(a, b)
             a -= l
             b -= d
 
-            print(a, b)
+        #   print(a, b)
 
             a *= self.scale
             b *= self.scale
@@ -54,7 +54,7 @@ class Canvas:
             a += 10
             b += 10
             #print(a, b)
-            print(a, b)
+        #    print(a, b)
             return a, self.v - b
 
         self.transform_func = lin_transform
@@ -66,7 +66,7 @@ class Canvas:
 
         # This limits the while loop to a max of 10 times per second.
         # Leave this out and we will use all CPU we can.
-        clock.tick(30)
+        #clock.tick(30)
 
         # All drawing code happens after the for loop and but
         # inside the main while done==False loop.
@@ -77,7 +77,8 @@ class Canvas:
         # This draws a triangle using the polygon command
 
         for points in disp:
-            pygame.draw.polygon(self.screen, BLACK, [self.transform_func(*point) for point in points], 5)
+            #print([self.transform_func(*point) for point in points])
+            pygame.draw.polygon(self.screen, BLACK, [self.transform_func(*point) for point in points], 2)
 
         # pygame.draw.polygon(screen, BLACK, p1.points, 5)
         # pygame.draw.polygon(screen, BLACK, p2.points, 5)
