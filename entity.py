@@ -17,7 +17,7 @@ class Entity(object):
 
         self.o = 0  # theta
         self.w = 0  # omega
-        self.a = 0  # alpha
+        self.dw = 0  # alpha
         self.static = False
 
         self.su = None  # static friction
@@ -31,18 +31,16 @@ class Entity(object):
 
     def velocity(self, point):
         # return the vx and vy of a point
-        r = distance((self.x, self.y), point)
-        v_tan = r * self.w
-
+        # r = distance((self.x, self.y), point)
+        # v_tan = r * self.w
+        pass
 
     def tick_velocities(self):
-        self.vx += self.ax
-        self.vy += self.ay
-        self.w += self.a
+        self.v += self.a
+        self.w += self.dw
 
     def tick_movement_no_collisions(self):
-        self.x += self.vx
-        self.y += self.vy
+        self.x += self.v
         self.o += self.w
 
     def load(self, d):
@@ -69,20 +67,19 @@ class Polygon(Entity):
     def __init__(self, mass, points):
         # calculate the center of mass
         super(Polygon, self).__init__(mass)
-
-        (self.x, self.y), self.area = self.center_of_mass(points)
+        if not isinstance(points[0], Vector2D):
+            points = [Vector2D(*i) for i in points]
+        self.x, self.area = self.center_of_mass(points)
         # translate all points to have center at 0, 0
 
-        self._points = [Vector2D(x - self.x, y - self.y) for x, y in points]
+        self._points = [i - self.x for i in points]
         self.i = self.moment_of_inertia_about_center()
         self.radius = self.set_radius()
 
     def center_of_mass(self, points):
         # break into many triangles
         # each point is part of two triangles
-        tmp_x = sum(i[0] for i in points) / len(points)
-        tmp_y = sum(i[1] for i in points) / len(points)
-        cor = [[tmp_x, tmp_y]]
+        cor = [sum(points)]
         mass_points = []
         area = 0
         for i in range(len(points) - 1):
@@ -93,12 +90,13 @@ class Polygon(Entity):
             # print(triangle, area)
         mass_points.append(build_triangle_point_mass(cor + [points[-1], points[0]]))
         area += shoelace_area(cor + [points[-1], points[0]])
-        return find_com(*zip(*mass_points)), area
+        return Vector2D(*find_com(*zip(*mass_points))), area
 
     def moment_of_inertia_about_center(self):
         moi = 0
-        cor = [[0, 0]]
+        cor = [Vector2D()]
         #  print(self._points)
+        print(self.points)
         for i in range(len(self._points) - 1):
             triangle = cor + self._points[i:i + 2]
             area = shoelace_area(triangle)

@@ -44,12 +44,11 @@ class Force(Quantity):
 
     def apply(self):
         # newton's second law
-        fx, fy = self.frc_func()
+        vec = self.frc_func()
         if not self.ticked:
             self.ticked = True
         else:
-            self.obj.ax -= self.ax
-            self.obj.ay -= self.ay
+            self.obj.a -= vec
         if not self.n_ticks: return False
 
         m = self.obj.m
@@ -98,13 +97,9 @@ class Gravity(Force):
     """
     def __init__(self, obj1, obj2):
         def gen_frc():
-            x1, y1 = obj1.x, obj1.y
-            x2, y2 = obj2.x, obj2.y
 
-            x = x2 - x1
-            y = y2 - y1
-            r = distance((x1, y1), (x2, y2))
-
+            x, y = obj1.x - obj2.x
+            r = obj1.x.distance(obj2.x)
             magnitude = G * obj1.m * obj2.m / (r**2)
 
             fx = x / r * magnitude

@@ -1,7 +1,7 @@
 from collections import deque, defaultdict
 from heapq import *
 from config import collide_epsilon
-from utils import segment_intersection, distance
+from utils import segment_intersection
 
 
 class Handler:
@@ -34,9 +34,7 @@ class Handler:
 
     @staticmethod
     def collisions(obj1, obj2):
-        com1 = obj1.x,obj1.y
-        com2 = obj2.x, obj2.y
-        if distance(com1, com2) > obj1.radius + obj2.radius:
+        if obj1.x.distance(obj2.x) > obj1.radius + obj2.radius:
             return []
         pts1 = obj1.points
         pts2 = obj2.points

@@ -11,21 +11,43 @@ class Vector2D:
         self.y = y
 
     def __add__(self, other):
-
+        if isinstance(other, (int, float)):
+            return self + Vector2D(other, other)
         return Vector2D(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __radd__(self, other):
+        return self + other
 
+    def __rsub__(self, other):
+        return -(self - other)
+
+    def __sub__(self, other):
+        if isinstance(other, (int, float)):
+            return self - Vector2D(other, other)
         return Vector2D(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, other):
+        return Vector2D(self.x * other, self.y * other)
+
+    def __rmul__(self, other):
+        return self * other
+
+    def __truediv__(self, other):
+        return Vector2D(self.x / other, self.y / other)
+
+    def __rtruediv__(self, other):
+        return Vector2D(other / self.x, other / self.y)
+
+    def __neg__(self):
+        return Vector2D(-self.x, -self.y)
 
     def __getitem__(self, index):
 
-        if index == 0:
-            return self.x
-        elif index == 1:
-            return self.y
-        else:
-            raise IndexError()
+        ret = [self.x, self.y]
+        return ret[index]
+
+    def __repr__(self):
+        return f'<{self.x}, {self.y}>'
 
     def magnitude(self):
 

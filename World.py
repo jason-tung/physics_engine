@@ -2,7 +2,6 @@ from collision_handler import Handler
 from canvas import Canvas
 from math import sin, cos
 from entity import Polygon
-from utils import distance
 from heapq import *
 from config import AUTO_ZOOM
 from quantity import *
