@@ -43,7 +43,10 @@ class Handler:
             # print('\n\n\n', v1_f, v2_f, '\n\nHERE')
             if v1_f == v1 or v2_f == v2:
                 return None, None
-
+            print('FUCKIGN VELOCITY')
+            print(v1_f)
+            print('FUCK FUCK FUCK FUCK')
+            print(v2_f)
             collision_time = max(obj1.col_ticks, obj2.col_ticks)
 
             def decompose(obj, force_vec, point):
@@ -52,20 +55,23 @@ class Handler:
                 dist = point.distance(obj.x)
                 a, b = obj.velocity(point)
                 t_magnitude = 1 if a * b < 0 else -1
-                t_magnitude *= force_vec.magnitude() * dist * sin(ang) * 0.5
+                t_magnitude *= force_vec.magnitude() * dist * sin(ang) / obj.radius * 0.5
                 f_vec = force_vec * cos(ang)
 
                 return f_vec, t_magnitude
 
             f1, t1 = decompose(obj1, obj1.m * (v1_f - v1) / collision_time, point)
             f2, t2 = decompose(obj2, obj2.m * (v2_f - v2) / collision_time, point)
-            print(f1, f2)
-            print(t1, t2)
+            print("GO FUCKING DIE PLEASE")
+            if f1.magnitude() < f2.magnitude():
+                f1 = -f2
+            # f1 = min(f1, f2, key = lambda x: x.magnitude())
+            # print(t1, t2)
             print('\n\n\n\n\n')
             return (Force(obj1, f1, collision_time, applier=obj2),
                     Torque(obj1, abs(t1), 1 if t1 > 0 else -1, collision_time, applier=obj2)), \
-                   (Force(obj2, f2, collision_time, applier=obj1),
-                    Torque(obj2, abs(t2), 1 if t2 > 0 else -1, collision_time, applier=obj1))
+                   (Force(obj2, -f1, collision_time, applier=obj1),
+                    Torque(obj2, abs(t1), -1 if t1 > 0 else 1, collision_time, applier=obj1))
 
     @staticmethod
     def collisions(obj1, obj2):
@@ -110,6 +116,8 @@ class Handler:
                     obj2 = self.objects[j]
 
                     a, b = self.compute(obj1, obj2)
+                    if a:
+                        collision = True
                     if a and not update_fail:
                         apply[obj1].extend(a)
                         apply[obj2].extend(b)
@@ -122,8 +130,8 @@ class Handler:
                 else:
                     break
             # if collision:
-            #     self.objects[i].v = Vector2D()
-            #     self.objects[]
+            #     self.objects[i].v *= 1
+            #     self.objects[i].w *= 1
 
         print(apply)
 

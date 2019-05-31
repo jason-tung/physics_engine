@@ -2,6 +2,6 @@
 # number of ticks per second
 tick_speed = 100
 moment_of_inertia_plates = 500
-AUTO_ZOOM = False
-SLOW = False
-SLOW_SPEED = 30
+AUTO_ZOOM = 1
+SLOW = 1
+SLOW_SPEED = 20

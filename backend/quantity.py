@@ -98,3 +98,8 @@ class VarForce(Force):
             return next(self.i)
 
         super(VarForce, self).__init__(object, frc_func(), len(app_tuple))
+
+
+def gen_gravs(objs):
+    return [Gravity(objs[i], objs[j]) for i in range(len(objs)) for j in range(len(objs)) if i != j]
+
