@@ -21,11 +21,12 @@ class Quantity:
 
 class Force(Quantity):
 
-    def __init__(self, object: Polygon, force, n_ticks):
+    def __init__(self, object, force, n_ticks, applier=None):
 
         if n_ticks == 0: raise ValueError("duration of force cannot be 0")
         super(Force, self).__init__()
         self.obj = object
+        self.applier = applier
 
         if hasattr(force, '__call__'):
             self.frc_func = force
@@ -33,28 +34,24 @@ class Force(Quantity):
             self.frc_func = lambda: force
 
         self.n_ticks = n_ticks
-        self.ticked = False
 
     def apply(self):
         # newton's second law
-        vec = self.frc_func()
-        if not self.ticked:
-            self.ticked = True
-        else:
-            self.obj.a -= self.a
         if not self.n_ticks:
             return False
-
-        self.a = vec / self.obj.m
-        print(self.a)
-        self.obj.a += self.a
-        self.n_ticks -= 1
+        vec = self.frc_func()
+        print(vec, self.n_ticks)
+        self.obj.v += vec / self.obj.m
+        self.n_ticks -=1
         return True
+
+    def __repr__(self):
+        return str(self.frc_func())
 
 
 class Torque(Quantity):
 
-    def __init__(self, object: Polygon, magnitude, direction, n_ticks):
+    def __init__(self, object: Polygon, magnitude, direction, n_ticks, applier=None):
         super(Torque, self).__init__()
         # direction == 1 -> clockwise
         # direction == -1 -> counter clockwise
@@ -62,21 +59,18 @@ class Torque(Quantity):
         self.obj = object
         self.t = magnitude * direction
         self.n_ticks = n_ticks
-        self.ticked = False
+        self.applier = applier
 
     def apply(self):
         # torque = I * alpha
         if not self.n_ticks:
-            self.obj.dw -= self.dw
             return False
-        if not self.ticked:
-            i = self.obj.i
-            self.dw = self.t / i
-            self.obj.dw += self.dw
-            self.ticked = True
-
+        self.obj.w += self.t / self.obj.i
         self.n_ticks -= 1
         return True
+
+    def __repr__(self):
+        return f'T<{self.t}>'
 
 
 class Gravity(Force):

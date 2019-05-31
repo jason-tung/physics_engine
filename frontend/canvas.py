@@ -19,6 +19,8 @@ class Canvas:
         pygame.init()
         self.screen = pygame.display.set_mode((self.h, self.v))
 
+        #self.l, self.r, self.d, self.u = l, r, d, u
+
     def build(self, objects):
         disp = [i.points for i in objects]
 
@@ -27,6 +29,7 @@ class Canvas:
 
         d = min(i[1] for i in chain(*disp))
         u = max(i[1] for i in chain(*disp))
+
 
         # apply a scale + translation for each point
         # (l, d) -> 10, 10 (r, u) -> 490, 990

@@ -1,4 +1,4 @@
-from math import sin, cos
+from math import sin, cos, acos
 
 
 class Vector2D:
@@ -27,6 +27,8 @@ class Vector2D:
         return Vector2D(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other):
+        if isinstance(other, Vector2D):
+            return self.x * other.x + self.y * other.y
         return Vector2D(self.x * other, self.y * other)
 
     def __rmul__(self, other):
@@ -45,6 +47,9 @@ class Vector2D:
 
         ret = [self.x, self.y]
         return ret[index]
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
 
     def __repr__(self):
         return f'<{self.x:.2f}, {self.y:.2f}>'
@@ -66,6 +71,16 @@ class Vector2D:
         x1, y1 = self
         x2, y2 = vector
         return ((x1 - x2)**2 + (y1 - y2)**2)**0.5
+
+    def angle(self, other):
+        try:
+            return acos(self * other / (self.magnitude() * other.magnitude()))
+        except ZeroDivisionError:
+            return 0
+
+    def unit(self):
+        return self / self.magnitude()
+
 
 
 class PseudoVector:

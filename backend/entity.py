@@ -1,20 +1,17 @@
 from math import sin, cos
 from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle
 from maths.vector import Vector2D
+from math import pi
 
 
 class Entity(object):
 
-    def __init__(self, mass):
+    def __init__(self, mass, col_ticks=1):
         self.x = Vector2D()
-
         self.v = Vector2D()
-
-        self.a = Vector2D()
 
         self.o = 0  # theta
         self.w = 0  # omega
-        self.dw = 0  # alpha
         self.static = False
 
         self.su = None  # static friction
@@ -25,20 +22,19 @@ class Entity(object):
 
         # determine if handler should process these movements
         self.handler_update = False
+        self.col_ticks = col_ticks
 
     def velocity(self, point):
-        # return the vx and vy of a point
-        # r = distance((self.x, self.y), point)
-        # v_tan = r * self.w
-        pass
-
-    def tick_velocities(self):
-        self.v += self.a
-        self.w += self.dw
-
-    def tick_movement_no_collisions(self):
-        self.x += self.v
-        self.o += self.w
+        """
+        Get the instantanous velocity of a point
+        :param point: Vector2D
+        :return: Vector2D
+        """
+        if not isinstance(point, Vector2D):
+            point = Vector2D(*point)
+        dist_vec = point - self.x
+        tang_vec = dist_vec.unit().rotate(pi / 2) * dist_vec.magnitude() * self.w
+        return self.v + tang_vec
 
     def load(self, d):
         for k, v in d.items():
@@ -61,13 +57,13 @@ class Entity(object):
 
 class Polygon(Entity):
 
-    def __init__(self, mass, points):
+    def __init__(self, mass, points, col_ticks=1):
         # calculate the center of mass
-        super(Polygon, self).__init__(mass)
+        super(Polygon, self).__init__(mass, col_ticks)
         if not isinstance(points[0], Vector2D):
             points = [Vector2D(*i) for i in points]
         self.x, self.area = self.center_of_mass(points)
-        print(self.x, 'COM')
+        # print(self.x, 'COM')
         # translate all points to have center at 0, 0
 
         self._points = [i - self.x for i in points]
@@ -108,7 +104,7 @@ class Polygon(Entity):
         return moi
 
     def set_radius(self):
-        return max((i ** 2 + j ** 2) ** 0.5 for i, j in self._points)
+        return max(i.magnitude() for i in self._points)
 
     @property
     def points(self):
@@ -123,7 +119,6 @@ if __name__ == '__main__':
     points = []
     radius = 10
     n_sides = 360
-    from math import pi
     import matplotlib.pyplot as plt
 
     for theta in range(0, 360, 360 // n_sides):
@@ -135,5 +130,3 @@ if __name__ == '__main__':
     p = Polygon(1, points)
     p.o = 0
     print(p.points)
-    # p = Polygon(1, [[0, 0], [0, 1], [1, 1], [1, 0]])
-    print(p.x, p.y, p.area, p.i)

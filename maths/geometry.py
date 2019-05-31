@@ -1,4 +1,5 @@
 from config import moment_of_inertia_plates
+from maths.vector import Vector2D
 
 
 def apollonius(a, b, c):
@@ -76,7 +77,7 @@ def segment_intersection(line1, line2):
     d = (det(*line1), det(*line2))
     x = det(d, xdiff) / div
     y = det(d, ydiff) / div
-    return x, y
+    return Vector2D(x, y)
 
 
 def find_moment_of_inertia_triangle(points, mass):
