@@ -73,4 +73,3 @@ class PseudoVector:
     def __init__(self, magnitude=0, direction=0):
         self.mag = magnitude
         self.dir = direction
-

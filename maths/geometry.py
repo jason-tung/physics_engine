@@ -1,5 +1,4 @@
 from config import moment_of_inertia_plates
-from maths.vector import Vector2D
 
 
 def apollonius(a, b, c):
@@ -13,7 +12,8 @@ def apollonius(a, b, c):
 
     def formula(x, y, z):
         # returns the median for x
-        return ((2 * y**2 + 2 * z**2 - x**2)/4)**0.5
+        return ((2 * y ** 2 + 2 * z ** 2 - x ** 2) / 4) ** 0.5
+
     res = []
     for i, j, k in (a, b, c), (b, c, a), (c, a, b):
         res.append(formula(i, j, k))
@@ -21,7 +21,6 @@ def apollonius(a, b, c):
 
 
 def find_com(points, masses):
-
     M = sum(masses)
 
     x_sum = 0
@@ -35,14 +34,13 @@ def find_com(points, masses):
 
 
 def shoelace_area(points):
-    #print(points)
+    # print(points)
     (ax, ay), (bx, by), (cx, cy) = points
 
     return abs(ax * (by - cy) + bx * (cy - ay) + cx * (ay - by)) / 2
 
 
 def build_triangle_point_mass(points):
-
     x = sum(i[0] for i in points) / len(points)
     y = sum(i[1] for i in points) / len(points)
 
@@ -51,17 +49,17 @@ def build_triangle_point_mass(points):
     return (x, y), mass
 
 
-def intersect(A,B,C,D):
-
+def intersect(A, B, C, D):
     def ccw(A, B, C):
         return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
 
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+
+
 # return true if intersecting [x1,y1,x2,y2],[x1,y1,x2,y2]
 
 
 def segment_intersection(line1, line2):
-
     if not intersect(*line1, *line2):
         return False
 
@@ -111,7 +109,7 @@ def find_moment_of_inertia_triangle(points, mass):
         length = base * multiplier
         this_area = length * dx
         this_mass = (this_area / area) * mass
-        moment_of_inertia += 1/12 * this_mass * (length**2 + dx**2)  # add the current moment of inertia
-        moment_of_inertia += (median_length * multiplier)**2 * this_mass  # apply the parallel axis theorem MR^2
-    #print(moment_of_inertia, mass)
+        moment_of_inertia += 1 / 12 * this_mass * (length ** 2 + dx ** 2)  # add the current moment of inertia
+        moment_of_inertia += (median_length * multiplier) ** 2 * this_mass  # apply the parallel axis theorem MR^2
+    # print(moment_of_inertia, mass)
     return moment_of_inertia

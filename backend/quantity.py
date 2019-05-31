@@ -22,14 +22,7 @@ class Quantity:
 class Force(Quantity):
 
     def __init__(self, object: Polygon, force, n_ticks):
-        """
-        :param object:
-        :param n_ticks:
-        :param fx:
-        :param fy:
-        :param magnitude:
-        :param target:
-        """
+
         if n_ticks == 0: raise ValueError("duration of force cannot be 0")
         super(Force, self).__init__()
         self.obj = object
@@ -55,7 +48,7 @@ class Force(Quantity):
         self.a = vec / self.obj.m
         print(self.a)
         self.obj.a += self.a
-        self.n_ticks -=1
+        self.n_ticks -= 1
         return True
 
 
@@ -91,11 +84,11 @@ class Gravity(Force):
     Gravity(obj1, obj2)
     :returns force on obj1 by obj2
     """
+
     def __init__(self, obj1, obj2):
         def gen_frc():
-
             r = obj1.x.distance(obj2.x)
-            magnitude = G * obj1.m * obj2.m / (r**2)
+            magnitude = G * obj1.m * obj2.m / (r ** 2)
 
             return (obj2.x - obj1.x) / r * magnitude
 
@@ -105,7 +98,6 @@ class Gravity(Force):
 class VarForce(Force):
 
     def __init__(self, object: Polygon, app_tuple):
-
         self.i = iter(app_tuple)
 
         def frc_func():

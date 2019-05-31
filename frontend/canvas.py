@@ -4,11 +4,11 @@ from backend.entity import Polygon
 from itertools import chain
 from config import SLOW
 
-BLACK = (  0,   0,   0)
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-BLUE =  (  0,   0, 255)
-GREEN = (  0, 255,   0)
-RED =   (255,   0,   0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
 
 
 class Canvas:
@@ -38,23 +38,23 @@ class Canvas:
         scale_2 = (self.h - 20) / size_h
 
         self.scale = min(scale_1, scale_2)
-        #print(l, r, d, u)
 
+        # print(l, r, d, u)
 
         def lin_transform(a, b):
-        #    print(a, b)
+            #    print(a, b)
             a -= l
             b -= d
 
-        #   print(a, b)
+            #   print(a, b)
 
             a *= self.scale
             b *= self.scale
 
             a += 10
             b += 10
-            #print(a, b)
-        #    print(a, b)
+            # print(a, b)
+            #    print(a, b)
             return a, self.v - b
 
         self.transform_func = lin_transform
@@ -77,7 +77,7 @@ class Canvas:
         # This draws a triangle using the polygon command
 
         for points in disp:
-            #print([self.transform_func(*point) for point in points])
+            # print([self.transform_func(*point) for point in points])
             pygame.draw.polygon(self.screen, BLACK, [self.transform_func(*point) for point in points], 2)
 
         # pygame.draw.polygon(screen, BLACK, p1.points, 5)

@@ -1,4 +1,3 @@
-from config import tick_speed
 from math import sin, cos
 from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle
 from maths.vector import Vector2D
@@ -7,7 +6,6 @@ from maths.vector import Vector2D
 class Entity(object):
 
     def __init__(self, mass):
-
         self.x = Vector2D()
 
         self.v = Vector2D()

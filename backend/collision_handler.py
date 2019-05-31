@@ -1,6 +1,4 @@
-from collections import deque, defaultdict
-from heapq import *
-from config import collide_epsilon
+from collections import defaultdict
 from maths.geometry import segment_intersection
 
 
@@ -27,8 +25,6 @@ class Handler:
             return None, None
         else:
             pass
-
-
         pass
 
     @staticmethod
