@@ -1,7 +1,6 @@
 # Import a library of functions called 'pygame'
 import pygame
-from math import pi
-from entity import Polygon
+from backend.entity import Polygon
 from itertools import chain
 from config import SLOW
 

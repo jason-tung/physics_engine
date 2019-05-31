@@ -1,5 +1,4 @@
 from config import tick_speed
-from utils import *
 from math import sin, cos
 from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle
 from maths.vector import Vector2D

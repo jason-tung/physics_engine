@@ -1,10 +1,9 @@
-from collision_handler import Handler
-from canvas import Canvas
+from backend.collision_handler import Handler
+from frontend.canvas import Canvas
 from math import sin, cos
-from entity import Polygon
 from heapq import *
 from config import AUTO_ZOOM
-from quantity import *
+from backend.quantity import *
 
 
 class World:
@@ -58,7 +57,7 @@ class World:
 
 
 if __name__ == '__main__':
-    from quantity import Gravity
+    from backend.quantity import Gravity
     from maths.vector import Vector2D
     w = World()
     p1 = Polygon(1000, [(0, 0), (4, 0), (4, 4), (0, 4)])

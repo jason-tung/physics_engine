@@ -1,7 +1,7 @@
 from collections import deque, defaultdict
 from heapq import *
 from config import collide_epsilon
-from utils import segment_intersection
+from maths.geometry import segment_intersection
 
 
 class Handler:

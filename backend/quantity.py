@@ -1,4 +1,4 @@
-from entity import Polygon
+from backend.entity import Polygon
 from constants import G
 
 
