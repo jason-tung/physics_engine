@@ -14,8 +14,7 @@ class Handler:
 
     def tick(self):
         for i in self.objects:
-            i.x += i.vx
-            i.y += i.vy
+            i.x += i.v
             i.o += i.w
 
     @staticmethod

@@ -48,16 +48,13 @@ class Force(Quantity):
         if not self.ticked:
             self.ticked = True
         else:
-            self.obj.a -= vec
-        if not self.n_ticks: return False
+            self.obj.a -= self.a
+        if not self.n_ticks:
+            return False
 
-        m = self.obj.m
-
-        self.ax = fx / m
-        self.ay = fy / m
-
-        self.obj.ax += self.ax
-        self.obj.ay += self.ay
+        self.a = vec / self.obj.m
+        print(self.a)
+        self.obj.a += self.a
         self.n_ticks -=1
         return True
 
@@ -77,13 +74,12 @@ class Torque(Quantity):
     def apply(self):
         # torque = I * alpha
         if not self.n_ticks:
-            self.obj.a -= self.alpha
+            self.obj.dw -= self.dw
             return False
         if not self.ticked:
             i = self.obj.i
-            self.alpha = self.t / i
-
-            self.obj.a += self.alpha
+            self.dw = self.t / i
+            self.obj.dw += self.dw
             self.ticked = True
 
         self.n_ticks -= 1
@@ -98,14 +94,10 @@ class Gravity(Force):
     def __init__(self, obj1, obj2):
         def gen_frc():
 
-            x, y = obj1.x - obj2.x
             r = obj1.x.distance(obj2.x)
             magnitude = G * obj1.m * obj2.m / (r**2)
 
-            fx = x / r * magnitude
-            fy = y / r * magnitude
-
-            return fx, fy
+            return (obj2.x - obj1.x) / r * magnitude
 
         super(Gravity, self).__init__(obj1, gen_frc, float('inf'))
 

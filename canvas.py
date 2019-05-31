@@ -3,6 +3,7 @@ import pygame
 from math import pi
 from entity import Polygon
 from itertools import chain
+from config import SLOW
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -66,7 +67,7 @@ class Canvas:
 
         # This limits the while loop to a max of 10 times per second.
         # Leave this out and we will use all CPU we can.
-        #clock.tick(30)
+        if SLOW: clock.tick(10)
 
         # All drawing code happens after the for loop and but
         # inside the main while done==False loop.

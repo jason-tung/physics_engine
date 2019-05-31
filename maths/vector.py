@@ -47,7 +47,7 @@ class Vector2D:
         return ret[index]
 
     def __repr__(self):
-        return f'<{self.x}, {self.y}>'
+        return f'<{self.x:.2f}, {self.y:.2f}>'
 
     def magnitude(self):
 

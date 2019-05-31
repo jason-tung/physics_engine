@@ -59,9 +59,10 @@ class World:
 
 if __name__ == '__main__':
     from quantity import Gravity
+    from maths.vector import Vector2D
     w = World()
     p1 = Polygon(1000, [(0, 0), (4, 0), (4, 4), (0, 4)])
-    p2 = Polygon(10**9, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
+    p2 = Polygon(10**5, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
     points = []
     radius = 3
     n_sides = 300
@@ -73,9 +74,9 @@ if __name__ == '__main__':
 
 
     #p3 = Polygon(1000000000000, [(20, 5), (21, 5), (21, 6), (20, 6)])
-    t = Torque(p1, 10, 1, 10)
+    t = Torque(p1, 1, 1, 10)
     g = Gravity(p1, p2)
-    p1.vx = 0.2
+    p1.v = Vector2D(0.15, 0)
     w.add_heap_unit(g)
     w.add_heap_unit(t)
     for i in [p1, p2]:
@@ -85,5 +86,3 @@ if __name__ == '__main__':
     print("what?")
     w.rebuild_canvas()
     w.mainloop()
-
-    p1.vx = 0.015

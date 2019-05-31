@@ -70,6 +70,7 @@ class Polygon(Entity):
         if not isinstance(points[0], Vector2D):
             points = [Vector2D(*i) for i in points]
         self.x, self.area = self.center_of_mass(points)
+        print(self.x, 'COM')
         # translate all points to have center at 0, 0
 
         self._points = [i - self.x for i in points]
@@ -79,7 +80,7 @@ class Polygon(Entity):
     def center_of_mass(self, points):
         # break into many triangles
         # each point is part of two triangles
-        cor = [sum(points)]
+        cor = [sum(points) / len(points)]
         mass_points = []
         area = 0
         for i in range(len(points) - 1):
@@ -116,7 +117,7 @@ class Polygon(Entity):
     def points(self):
         n_points = []
         for point in self._points:
-            n_points.append(point.rotate(self.o))
+            n_points.append(point.rotate(self.o) + self.x)
         return n_points
 
 
