@@ -1,20 +1,19 @@
 from config import tick_speed
-from utils import rotate_point_about_origin, _build_triangle_point_mass, _find_com_points, \
-    find_moment_of_inertia_triangle, _shoelace_area
+from utils import *
 from math import sin, cos
+from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle
+from maths.vector import Vector2D
 
 
 class Entity(object):
 
     def __init__(self, mass):
-        self.x = None
-        self.y = None
 
-        self.vx = 0
-        self.vy = 0
+        self.x = Vector2D()
 
-        self.ax = 0
-        self.ay = 0
+        self.v = Vector2D()
+
+        self.a = Vector2D()
 
         self.o = 0  # theta
         self.w = 0  # omega
@@ -29,6 +28,12 @@ class Entity(object):
 
         # determine if handler should process these movements
         self.handler_update = False
+
+    def velocity(self, point):
+        # return the vx and vy of a point
+        r = distance((self.x, self.y), point)
+        v_tan = r * self.w
+
 
     def tick_velocities(self):
         self.vx += self.ax
@@ -68,7 +73,7 @@ class Polygon(Entity):
         (self.x, self.y), self.area = self.center_of_mass(points)
         # translate all points to have center at 0, 0
 
-        self._points = [[x - self.x, y - self.y] for x, y in points]
+        self._points = [Vector2D(x - self.x, y - self.y) for x, y in points]
         self.i = self.moment_of_inertia_about_center()
         self.radius = self.set_radius()
 
@@ -83,12 +88,12 @@ class Polygon(Entity):
         for i in range(len(points) - 1):
             triangle = cor + points[i:i + 2]
             # print(triangle)
-            mass_points.append(_build_triangle_point_mass(triangle))
-            area += _shoelace_area(triangle)
+            mass_points.append(build_triangle_point_mass(triangle))
+            area += shoelace_area(triangle)
             # print(triangle, area)
-        mass_points.append(_build_triangle_point_mass(cor + [points[-1], points[0]]))
-        area += _shoelace_area(cor + [points[-1], points[0]])
-        return _find_com_points(*zip(*mass_points)), area
+        mass_points.append(build_triangle_point_mass(cor + [points[-1], points[0]]))
+        area += shoelace_area(cor + [points[-1], points[0]])
+        return find_com(*zip(*mass_points)), area
 
     def moment_of_inertia_about_center(self):
         moi = 0
@@ -96,12 +101,12 @@ class Polygon(Entity):
         #  print(self._points)
         for i in range(len(self._points) - 1):
             triangle = cor + self._points[i:i + 2]
-            area = _shoelace_area(triangle)
+            area = shoelace_area(triangle)
             moi += find_moment_of_inertia_triangle(cor + self._points[i:i + 2], self.m * area / self.area)
         #  print(triangle, moi)
 
         moi += find_moment_of_inertia_triangle(cor + [self._points[-1], self._points[0]],
-                                               self.m * _shoelace_area(
+                                               self.m * shoelace_area(
                                                    cor + [self._points[-1], self._points[0]]) / self.area)
         # print('ed', _shoelace_area(cor + [self._points[-1], self._points[0]]), moi)
         return moi
@@ -113,18 +118,8 @@ class Polygon(Entity):
     def points(self):
         n_points = []
         for point in self._points:
-            x, y = rotate_point_about_origin(point, self.o)
-            x += self.x
-            y += self.y
-            n_points.append([x, y])
+            n_points.append(point.rotate(self.o))
         return n_points
-
-    def tick_forces(self):
-
-        self.vx += self.ax / tick_speed
-        self.vy += self.ay / tick_speed
-
-        self.w += self.a / tick_speed
 
 
 if __name__ == '__main__':

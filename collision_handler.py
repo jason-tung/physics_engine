@@ -12,33 +12,32 @@ class Handler:
         # get a net force
         self.objects = []
 
+    def tick(self):
+        for i in self.objects:
+            i.x += i.vx
+            i.y += i.vy
+            i.o += i.w
 
     @staticmethod
     def compute(obj1, obj2):
         # return the forces acted on object one by object two
         # first check for possible collision
 
+        inters = Handler.collisions(obj1, obj2)
+        if not inters:
+            return None, None
+        else:
+            pass
+
+
         pass
 
-    def iterate_forces(self):
-
-        apply = defaultdict(dict)
-
-        for i in range(len(self.objects)):
-            for j in range(1, len(self.objects)):
-                obj1 = self.objects[i]
-                obj2 = self.objects[j]
-
-                apply[obj1][obj2] = self.compute(obj1, obj2)
-                apply[obj2][obj1] = self.compute(obj2, obj1)
-        return apply
-
     @staticmethod
-    def is_colliding(obj1, obj2):
+    def collisions(obj1, obj2):
         com1 = obj1.x,obj1.y
         com2 = obj2.x, obj2.y
         if distance(com1, com2) > obj1.radius + obj2.radius:
-            return False
+            return []
         pts1 = obj1.points
         pts2 = obj2.points
         # print("pts1",pts1)
@@ -56,3 +55,18 @@ class Handler:
                     intersections.append(inters)
         return intersections
 
+    def iterate_forces(self):
+
+        apply = defaultdict(list)
+
+        for i in range(len(self.objects)):
+            for j in range(1, len(self.objects)):
+                obj1 = self.objects[i]
+                obj2 = self.objects[j]
+
+                a, b = self.compute(obj1, obj2)
+                if a:
+                    apply[obj1].append(a)
+                    apply[obj2].append(b)
+
+        return apply

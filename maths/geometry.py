@@ -1,8 +1,15 @@
-from math import sin, cos
 from config import moment_of_inertia_plates
+from maths.vector import Vector2D
 
 
 def apollonius(a, b, c):
+    """
+
+    :param a: point
+    :param b: point
+    :param c: point
+    :return: median lengths to a, b, and c
+    """
 
     def formula(x, y, z):
         # returns the median for x
@@ -13,7 +20,7 @@ def apollonius(a, b, c):
     return res
 
 
-def _find_com_points(points, masses):
+def find_com(points, masses):
 
     M = sum(masses)
 
@@ -27,19 +34,19 @@ def _find_com_points(points, masses):
     return x_sum / M, y_sum / M
 
 
-def _shoelace_area(points):
+def shoelace_area(points):
     #print(points)
     (ax, ay), (bx, by), (cx, cy) = points
 
     return abs(ax * (by - cy) + bx * (cy - ay) + cx * (ay - by)) / 2
 
 
-def _build_triangle_point_mass(points):
+def build_triangle_point_mass(points):
 
     x = sum(i[0] for i in points) / len(points)
     y = sum(i[1] for i in points) / len(points)
 
-    mass = _shoelace_area(points)
+    mass = shoelace_area(points)
 
     return (x, y), mass
 
@@ -80,12 +87,12 @@ def find_moment_of_inertia_triangle(points, mass):
     # assume first point will be the central axis
     # break into moment_of_inertia_plates and then use parallel axis theorem
     # print(points)
-    area = _shoelace_area(points)
+    area = shoelace_area(points)
 
-    base = distance(points[1], points[2])
+    base = points[1].distance(points[2])
 
-    leg1 = distance(points[0], points[1])
-    leg2 = distance(points[0], points[2])
+    leg1 = points[0].distance(points[1])
+    leg2 = points[0].distance(points[2])
 
     altitude_length = 2 * area / base
 
@@ -108,6 +115,3 @@ def find_moment_of_inertia_triangle(points, mass):
         moment_of_inertia += (median_length * multiplier)**2 * this_mass  # apply the parallel axis theorem MR^2
     #print(moment_of_inertia, mass)
     return moment_of_inertia
-
-if __name__ == '__main__':
-    print(find_moment_of_inertia_triangle([[0, -1], [1, 1], [0, 0]], 100))
