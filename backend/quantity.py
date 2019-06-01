@@ -40,7 +40,7 @@ class Force(Quantity):
         if not self.n_ticks:
             return False
         vec = self.frc_func()
-        print(vec, self.n_ticks)
+       # print(vec, self.n_ticks)
         self.obj.v += vec / self.obj.m
         self.n_ticks -=1
         return True

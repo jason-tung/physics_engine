@@ -4,6 +4,8 @@ from math import sin, cos
 from heapq import *
 from config import AUTO_ZOOM
 from backend.quantity import *
+from debug_tools.collision import assert_collisions
+
 
 class World:
 
@@ -11,14 +13,14 @@ class World:
 
         self.objects = []
         self.canvas = Canvas()
-        self.handler = Handler()
+        self.handler = Handler(self)
         self.handler.objects = self.objects
         self.heap = []
         self.tick = 0
 
     def add_heap_unit(self, quantity: [Torque, Force]):
         # print(quantity, type(quantity))
-        print(self.heap)
+        # print(self.heap)
         if isinstance(quantity, Torque):
             if quantity.t == 0:
                 return
@@ -33,19 +35,19 @@ class World:
         else:
             heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
 
-        print('FINAL', self.heap)
+        # print('FINAL', self.heap)
 
     def tick_forces(self):
-
+        print(self.heap)
         for _, i in self.heap:
-            if i.__class__ == Torque: continue
+            # if i.__class__ == Torque: continue
             i.apply()
             #print(i.__dict__)
 
         while self.heap and self.heap[0][0] <= self.tick:
             #print(self.heap[0][0], self.tick)
             _, quantity = heappop(self.heap)
-            if i.__class__ == Torque: continue
+            # if quantity.__class__ == Torque: continue
             quantity.apply()
 
     def add_object(self, obj):
@@ -57,29 +59,30 @@ class World:
     def mainloop(self):
         while True:
             print('\n', self.tick, '\n')
-
+            assert_collisions(self.objects)
             self.tick_forces()
-
+            self.handler.equilibrium()
             print(self.heap)
 
             if AUTO_ZOOM:
                 self.canvas.build(self.objects)
             for i in self.objects:
-                print(i.__dict__)
+                print(i)
 
             for frc in self.handler.tick():
-                self.add_heap_unit(frc)
+                pass
             self.canvas.update()
             self.tick += 1
+            assert_collisions(self.objects)
 
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
     from maths.vector import Vector2D
     w = World()
-    p1 = Polygon(1000, [(0, 0), (4, 0), (4, 4), (0, 4)])
+    p1 = Polygon(10000, [(0, 0), (4, 0), (4, 4), (0, 4)])
     p2 = Polygon(10**5, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
-    p3 = Polygon(1, [(20, 20), (21, 20), (20, 21)])
+    p3 = Polygon(10000, [(20, 20), (22, 20), (20, 22)])
     points = []
     radius = 3
     n_sides = 50
@@ -88,14 +91,15 @@ if __name__ == '__main__':
         points.append([cos(pi/180 * theta) * radius + 10, sin(pi/180 * theta) * radius + 10])
 
     p2 = Polygon(10**10, points)
-    #p2.v = Vector2D(0.01, 1)
+    # p2.v = Vector2D(0.01, 1)
     # p3 = Polygon(1000000000000, [(20, 5), (21, 5), (21, 6), (20, 6)])
     t = Torque(p1, 10, 1, 10)
-    p1.v = Vector2D(0.2, -0.1)
+    p1.v = Vector2D(0.22, -0.1)
     w.add_heap_unit(t)
-    for g in gen_gravs([p1, p2, p3]):
+    active = [p1, p3, p2]
+    for g in gen_gravs(active):
         w.add_heap_unit(g)
-    for i in [p1, p2, p3]:
+    for i in active:
         w.add_object(i)
     print(p1.points)
     print(p2.points)

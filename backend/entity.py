@@ -1,12 +1,12 @@
 from math import sin, cos
-from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle
+from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle, segment_intersection
 from maths.vector import Vector2D
 from math import pi
 
 
 class Entity(object):
 
-    def __init__(self, mass, col_ticks=1):
+    def __init__(self, mass, col_ticks=1, loss=0.75):
         self.x = Vector2D()
         self.v = Vector2D()
 
@@ -23,6 +23,7 @@ class Entity(object):
         # determine if handler should process these movements
         self.handler_update = False
         self.col_ticks = col_ticks
+        self.loss = loss
 
     def velocity(self, point):
         """
@@ -70,6 +71,9 @@ class Polygon(Entity):
         self.i = self.moment_of_inertia_about_center()
         self.radius = self.set_radius()
 
+    def __repr__(self):
+        return str({'m': self.m, 'x': self.x, 'v': self.v, 'w': self.w})
+
     def center_of_mass(self, points):
         # break into many triangles
         # each point is part of two triangles
@@ -105,6 +109,33 @@ class Polygon(Entity):
 
     def set_radius(self):
         return max(i.magnitude() for i in self._points)
+
+    def intersections(self, obj2):
+        if self.x.distance(obj2.x) > self.radius + obj2.radius:
+            return []
+        pts1 = self.points
+        pts2 = obj2.points
+
+        # print(pts1)
+        # print(pts2)
+        # print("pts1",pts1)
+        # print("x,y", com1)
+
+        intersections = []
+
+        for i in range(len(pts1)):
+            l1 = [pts1[i - 1], pts1[i]]
+            # print("l1", l1)
+            for j in range(len(pts2)):
+                l2 = [pts2[j - 1], pts2[j]]
+                inters = segment_intersection(l1, l2)
+                # if not inters: continue
+                assert segment_intersection(l1, l2) == segment_intersection(l2, l1)
+                # print(l1, l2)
+                if inters:
+                    intersections.append(inters)
+        # print(intersections, 'INTERSECTIONS')
+        return intersections
 
     @property
     def points(self):
