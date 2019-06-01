@@ -42,6 +42,7 @@ class World:
         for _, i in self.heap:
             # if i.__class__ == Torque: continue
             i.apply()
+            print(i, 'applied', i.obj)
             #print(i.__dict__)
 
         while self.heap and self.heap[0][0] <= self.tick:
@@ -49,6 +50,7 @@ class World:
             _, quantity = heappop(self.heap)
             # if quantity.__class__ == Torque: continue
             quantity.apply()
+        print('APPLIED', self.objects)
 
     def add_object(self, obj):
         self.objects.append(obj)
@@ -61,7 +63,6 @@ class World:
             print('\n', self.tick, '\n')
             assert_collisions(self.objects)
             self.tick_forces()
-            self.handler.equilibrium()
             print(self.heap)
 
             if AUTO_ZOOM:
@@ -80,21 +81,21 @@ if __name__ == '__main__':
     from backend.quantity import Gravity
     from maths.vector import Vector2D
     w = World()
-    p1 = Polygon(10000, [(0, 0), (4, 0), (4, 4), (0, 4)])
-    p2 = Polygon(10**5, [(2, 3.5), (-1, 9), (2, 9), (5, 6)])
-    p3 = Polygon(10000, [(20, 20), (22, 20), (20, 22)])
+    x = 9
+    p1 = Polygon(10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
+    p3 = Polygon(10000, [(-20-x, 511), (-20-x, 521), (0-x, 521), (0-x, 511)])
     points = []
-    radius = 3
+    radius = 500
     n_sides = 50
     from math import pi
     for theta in range(0, 360, 360//n_sides):
-        points.append([cos(pi/180 * theta) * radius + 10, sin(pi/180 * theta) * radius + 10])
+        points.append([cos(pi/180 * theta) * radius, sin(pi/180 * theta) * radius])
 
-    p2 = Polygon(10**10, points)
+    p2 = Polygon(10**16, points)
     # p2.v = Vector2D(0.01, 1)
     # p3 = Polygon(1000000000000, [(20, 5), (21, 5), (21, 6), (20, 6)])
     t = Torque(p1, 10, 1, 10)
-    p1.v = Vector2D(0.22, -0.1)
+    #p1.v = Vector2D(0.23, -0.1)
     w.add_heap_unit(t)
     active = [p1, p3, p2]
     for g in gen_gravs(active):

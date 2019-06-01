@@ -44,6 +44,24 @@ class Handler:
 
             v1_f = (obj1.m - obj2.m) / m * v1 + (2 * obj2.m) / m * v2
             v2_f = (2 * obj1.m) / m * v1 + (obj1.m - obj2.m) / m * v2
+
+            def decomp(obj, vec, point):
+                v_vec = obj.v.project(vec)
+                opp = vec - v_vec
+                w = opp.magnitude() / (obj.x-point).magnitude()
+                if point.y > obj.x.y:
+                    if point.x < 0:
+                        w *= -1
+                else:
+                    if point.x > 0:
+                        w *= -1
+                return v_vec, w
+
+
+
+            # w1_f = (obj1.m - obj2.m) / m * w1 + (2 * obj2.m) / m * w2
+            # w2_f = (2 * obj1.m) / m * w1 + (obj1.m - obj2.m) / m * w2
+
             print('\n\n\nCOLLISION\n', obj1, obj2, v1_f, v2_f, '\n\n\n')
             if v1_f == v1 or v2_f == v2:
                 return None, None
@@ -53,7 +71,8 @@ class Handler:
                 # print(force_vec)
                 ang = force_vec.angle(obj.x - point)
                 dist = point.distance(obj.x)
-                t_magnitude = 1 if obj.w < 0 else -1
+                a, b = obj.velocity(point)
+                t_magnitude = 1 if a * b < 0 else -1
                 t_magnitude *= force_vec.magnitude() * dist * sin(ang) / obj.radius * 0.17
                 f_vec = force_vec * cos(ang)
 
@@ -66,12 +85,16 @@ class Handler:
 
             # obj1.v += f1 * obj1.loss / obj1.m
             # obj2.v += f2 * obj2.loss / obj2.m
-            obj1.v = v1_f * obj1.loss
-            obj2.v = v2_f * obj2.loss
+
+            v1, w1 = decomp(obj1, v1_f, point)
+            v2, w2 = decomp(obj2, v2_f, point)
+
+            obj1.v = v1 * obj1.loss
+            obj2.v = v2 * obj2.loss
             print(obj1.v, obj2.v)
 
-            obj1.w += t1 / obj1.i
-            obj2.w += t2 / obj2.i
+            obj1.w = w1 * obj1.loss
+            obj2.w = w2 * obj2.loss
 
             #print)obj1.w
 
@@ -93,8 +116,8 @@ class Handler:
             update_fail = False
             for v_vect, w in [(self.objects[i].v, self.objects[i].w),
                               (Vector2D(), self.objects[i].w),
-                              (self.objects[i].v, 0)][:1]:
-
+                              (self.objects[i].v, 0)]:
+                # print(self.objects)
                 assert_collisions(self.objects)
                 orig_x = self.objects[i].x
                 orig_o = self.objects[i].o
@@ -103,10 +126,12 @@ class Handler:
                 collision = False
                 obj1 = self.objects[i]
                 for j in range(len(self.objects)):
-                    if i == j: continue
+                    if i == j:
+                        continue
                     obj2 = self.objects[j]
 
                     a, b = self.compute(obj1, obj2)
+                    print(a, b)
                     #print(a, b, i, j)
                     # if a: print(a, b), i, j, update_fail
                     if a:

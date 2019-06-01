@@ -81,6 +81,12 @@ class Vector2D:
     def unit(self):
         return self / self.magnitude()
 
+    def project(self, other):
+        # return proj_other (self)
+        # other -> u
+        # self -> v
+        return (other * self) / self.magnitude() * self.unit()
+
 
 
 class PseudoVector:
