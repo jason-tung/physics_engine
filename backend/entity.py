@@ -6,7 +6,7 @@ from math import pi
 
 class Entity(object):
 
-    def __init__(self, mass, col_ticks=1, loss=0.75):
+    def __init__(self, mass, col_ticks=1, loss=0.5):
         self.x = Vector2D()
         self.v = Vector2D()
 

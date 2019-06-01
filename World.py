@@ -2,7 +2,7 @@ from backend.collision_handler import Handler
 from frontend.canvas import Canvas
 from math import sin, cos
 from heapq import *
-from config import AUTO_ZOOM
+from config import AUTO_ZOOM, RENDER_RATE
 from backend.quantity import *
 from debug_tools.collision import assert_collisions
 
@@ -61,27 +61,29 @@ class World:
     def mainloop(self):
         while True:
             print('\n', self.tick, '\n')
-            assert_collisions(self.objects)
             self.tick_forces()
             print(self.heap)
 
-            if AUTO_ZOOM:
-                self.canvas.build(self.objects)
+            if self.tick % RENDER_RATE == 0:
+                if AUTO_ZOOM:
+                    self.canvas.build(self.objects)
+
+                self.canvas.update()
             for i in self.objects:
                 print(i)
 
             for frc in self.handler.tick():
                 pass
-            self.canvas.update()
+
             self.tick += 1
-            assert_collisions(self.objects)
 
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
     from maths.vector import Vector2D
+    from random import randint
     w = World()
-    x = 9
+    x = 6
     p1 = Polygon(10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
     p3 = Polygon(10000, [(-20-x, 511), (-20-x, 521), (0-x, 521), (0-x, 511)])
     points = []
@@ -91,13 +93,19 @@ if __name__ == '__main__':
     for theta in range(0, 360, 360//n_sides):
         points.append([cos(pi/180 * theta) * radius, sin(pi/180 * theta) * radius])
 
-    p2 = Polygon(10**16, points)
-    # p2.v = Vector2D(0.01, 1)
-    # p3 = Polygon(1000000000000, [(20, 5), (21, 5), (21, 6), (20, 6)])
-    t = Torque(p1, 10, 1, 10)
-    #p1.v = Vector2D(0.23, -0.1)
-    w.add_heap_unit(t)
-    active = [p1, p3, p2]
+    p2 = Polygon(0.25 * 10**16, points)
+    z = 1500
+    active = []
+    for i in range(50):
+        x = randint(-z, z)
+        y = randint(0, z)
+        p = Polygon(100, [(-10 + x, 500 + y),
+                            (-10 + x, 520 + y),
+                            (10 + x, 520 + y),
+                            (10 + x, 500 + y)])
+
+        active.append(p)
+    active.append(p2)
     for g in gen_gravs(active):
         w.add_heap_unit(g)
     for i in active:

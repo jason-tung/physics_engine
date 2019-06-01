@@ -118,7 +118,6 @@ class Handler:
                               (Vector2D(), self.objects[i].w),
                               (self.objects[i].v, 0)]:
                 # print(self.objects)
-                assert_collisions(self.objects)
                 orig_x = self.objects[i].x
                 orig_o = self.objects[i].o
                 self.objects[i].x += v_vect
@@ -131,7 +130,7 @@ class Handler:
                     obj2 = self.objects[j]
 
                     a, b = self.compute(obj1, obj2)
-                    print(a, b)
+                    # print(a, b)
                     #print(a, b, i, j)
                     # if a: print(a, b), i, j, update_fail
                     if a:
@@ -146,7 +145,6 @@ class Handler:
                 if collision:
                     self.objects[i].x = orig_x
                     self.objects[i].o = orig_o
-                    assert_collisions(self.objects)
                     update_fail = True
                 else:
                     break
@@ -155,8 +153,6 @@ class Handler:
             #     self.objects[i].w *= 1
 
         print(apply)
-
-        assert_collisions(self.objects)
 
 
         self.ledger.append(collided)
