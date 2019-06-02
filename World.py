@@ -124,7 +124,7 @@ if __name__ == '__main__':
     print("---+++")
     w.save_objs("new_test.txt")
     w.objects = []
-    w.reload_with_json("new_test.txt")
+    w.reload_with_json("new_test.txt") 
     print("FDSFDSFDSFDSF")
     print(w.objects)
     print("+++---")
