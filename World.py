@@ -19,30 +19,16 @@ class World:
         self.tick = 0
 
     def add_heap_unit(self, quantity: [Torque, Force]):
-        # print(quantity, type(quantity))
-        # print(self.heap)
-        if isinstance(quantity, Torque):
-            if quantity.t == 0:
-                return
-        else:
-            if quantity.frc_func().magnitude() == 0:
-                return
-
-        if quantity.applier:
-            if not any(type(i) == type(quantity) and i.obj == quantity.obj and i.applier == quantity.applier for _, i in self.heap):
-                heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
-
-        else:
             heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
 
         # print('FINAL', self.heap)
 
     def tick_forces(self):
-        print(self.heap)
+        # print(self.heap)
         for _, i in self.heap:
             # if i.__class__ == Torque: continue
             i.apply()
-            print(i, 'applied', i.obj)
+            # print(i, 'applied', i.obj)
             #print(i.__dict__)
 
         while self.heap and self.heap[0][0] <= self.tick:
@@ -50,7 +36,7 @@ class World:
             _, quantity = heappop(self.heap)
             # if quantity.__class__ == Torque: continue
             quantity.apply()
-        print('APPLIED', self.objects)
+        # print('APPLIED', self.objects)
 
     def add_object(self, obj):
         self.objects.append(obj)
@@ -69,11 +55,9 @@ class World:
                     self.canvas.build(self.objects)
 
                 self.canvas.update()
-            for i in self.objects:
-                print(i)
-
-            for frc in self.handler.tick():
-                pass
+            #for i in self.objects:
+            #    print(i)
+            self.handler.tick()
 
             self.tick += 1
 
@@ -93,21 +77,25 @@ if __name__ == '__main__':
     for theta in range(0, 360, 360//n_sides):
         points.append([cos(pi/180 * theta) * radius, sin(pi/180 * theta) * radius])
 
-    p2 = Polygon(0.25 * 10**16, points)
+    p2 = Polygon(0.5 * 10**16, points)
     z = 1500
     active = []
     for i in range(50):
-        x = randint(-z, z)
-        y = randint(0, z)
-        p = Polygon(100, [(-10 + x, 500 + y),
-                            (-10 + x, 520 + y),
-                            (10 + x, 520 + y),
-                            (10 + x, 500 + y)])
+        y = i * 21
+        p = Polygon(10**5, [(-20 + x, 500 + y),
+                            (-20 + x, 520 + y),
+                            (20 + x, 520 + y),
+                            (20 + x, 500 + y)])
 
         active.append(p)
     active.append(p2)
+    p3 = Polygon(10**12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
+    p3.v = Vector2D(20, 0)
+    active.append(p3)
+
     for g in gen_gravs(active):
         w.add_heap_unit(g)
+
     for i in active:
         w.add_object(i)
     print(p1.points)

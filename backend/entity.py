@@ -6,7 +6,7 @@ from math import pi
 
 class Entity(object):
 
-    def __init__(self, mass, col_ticks=1, loss=0.5):
+    def __init__(self, mass, col_ticks=1, loss=1):
         self.x = Vector2D()
         self.v = Vector2D()
 
@@ -26,6 +26,7 @@ class Entity(object):
         self.loss = loss
 
     def velocity(self, point):
+       # if self.v.magnitude() > 20: self.v = Vector2D(0.1, 0.1)
         """
         Get the instantanous velocity of a point
         :param point: Vector2D
