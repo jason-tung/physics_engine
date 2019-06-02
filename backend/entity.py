@@ -76,9 +76,9 @@ class Polygon(Entity):
     def __repr__(self):
         return str({'m': self.m, 'x': self.x, 'v': self.v, 'w': self.w})
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=True, indent=4)
+    # def toJSON(self):
+    #     return json.dumps(self, default=lambda o: o.__dict__,
+    #                       sort_keys=True, indent=4)
 
     def center_of_mass(self, points):
         # break into many triangles

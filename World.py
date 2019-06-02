@@ -4,6 +4,7 @@ from math import sin, cos
 from heapq import *
 from config import AUTO_ZOOM, RENDER_RATE
 from backend.quantity import *
+import json
 from debug_tools.collision import assert_collisions
 
 
@@ -66,13 +67,17 @@ class World:
         dump = [k.toJSON for k in self.objects]
         savename = "world.txt" if len(args) == 0 else args[0]
         with open("saved_worlds/" + savename, 'w') as f:
-            for item in dump:
-                sitem = str(item)
-                sitem = sitem[sitem.find("{")+1:sitem.rfind("}")]
-                f.write("%s\n" % sitem)
+            json.dump(dump,f)
 
-    def reload_with_json(self, json):
-        return
+    def reload_with_json(self, filename):
+        with open("saved_worlds/" + filename, 'r') as f:
+            # for line in f:
+            #     obj = line.strip().replace(" ","").split(",")
+            #     for property in obj:
+            #         kv_pair = property.split(":")
+            #         print(kv_pair)
+            return
+
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
@@ -115,6 +120,8 @@ if __name__ == '__main__':
     print("what?")
     w.rebuild_canvas()
     print("---+++")
-    print(w.save_objs("test"))
+    print(w.save_objs("new_test.txt"))
+    w.objects = []
+    w.reload_with_json("new_test.txt")
     print("+++---")
     #w.mainloop()
