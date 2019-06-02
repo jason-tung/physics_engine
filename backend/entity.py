@@ -1,5 +1,6 @@
 from math import sin, cos
-from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle, segment_intersection
+from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle, \
+    segment_intersection
 from maths.vector import Vector2D
 from math import pi
 import json
@@ -27,7 +28,7 @@ class Entity(object):
         self.loss = loss
 
     def velocity(self, point):
-       # if self.v.magnitude() > 20: self.v = Vector2D(0.1, 0.1)
+        # if self.v.magnitude() > 20: self.v = Vector2D(0.1, 0.1)
         """
         Get the instantanous velocity of a point
         :param point: Vector2D

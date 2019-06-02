@@ -5,6 +5,7 @@ from heapq import *
 from config import AUTO_ZOOM, RENDER_RATE
 from backend.quantity import *
 import json
+from backend.obj_encoder import MyEncoder
 from debug_tools.collision import assert_collisions
 
 
@@ -20,9 +21,9 @@ class World:
         self.tick = 0
 
     def add_heap_unit(self, quantity: [Torque, Force]):
-            heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
+        heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
 
-        # print('FINAL', self.heap)
+    # print('FINAL', self.heap)
 
     def tick_forces(self):
         # print(self.heap)
@@ -30,10 +31,10 @@ class World:
             # if i.__class__ == Torque: continue
             i.apply()
             # print(i, 'applied', i.obj)
-            #print(i.__dict__)
+            # print(i.__dict__)
 
         while self.heap and self.heap[0][0] <= self.tick:
-            #print(self.heap[0][0], self.tick)
+            # print(self.heap[0][0], self.tick)
             _, quantity = heappop(self.heap)
             # if quantity.__class__ == Torque: continue
             quantity.apply()
@@ -56,57 +57,58 @@ class World:
                     self.canvas.build(self.objects)
 
                 self.canvas.update()
-            #for i in self.objects:
+            # for i in self.objects:
             #    print(i)
             self.handler.tick()
 
             self.tick += 1
 
-    def save_objs(self,*args):
-        #save to a name if providede otherwise use default name "world"
-        dump = [k.toJSON for k in self.objects]
+    def save_objs(self, *args):
+        # save to a name if providede otherwise use default name "world"
         savename = "world.txt" if len(args) == 0 else args[0]
         with open("saved_worlds/" + savename, 'w') as f:
-            json.dump(dump,f)
+            json.dump(self.objects, f, cls=MyEncoder)
 
     def reload_with_json(self, filename):
-        with open("saved_worlds/" + filename, 'r') as f:
-            # for line in f:
-            #     obj = line.strip().replace(" ","").split(",")
-            #     for property in obj:
-            #         kv_pair = property.split(":")
-            #         print(kv_pair)
-            return
+        with open("saved_worlds/" + filename) as f:
+            data = json.loads(f.read())
+        for obj in data:
+            # print("===")
+            # print(obj)
+            self.add_object(Polygon(obj['m'],obj['points']))
+        # return
 
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
     from maths.vector import Vector2D
     from random import randint
+
     w = World()
     x = 6
     p1 = Polygon(10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
-    p3 = Polygon(10000, [(-20-x, 511), (-20-x, 521), (0-x, 521), (0-x, 511)])
+    p3 = Polygon(10000, [(-20 - x, 511), (-20 - x, 521), (0 - x, 521), (0 - x, 511)])
     points = []
     radius = 500
     n_sides = 50
     from math import pi
-    for theta in range(0, 360, 360//n_sides):
-        points.append([cos(pi/180 * theta) * radius, sin(pi/180 * theta) * radius])
 
-    p2 = Polygon(0.5 * 10**16, points)
+    for theta in range(0, 360, 360 // n_sides):
+        points.append([cos(pi / 180 * theta) * radius, sin(pi / 180 * theta) * radius])
+
+    p2 = Polygon(0.5 * 10 ** 16, points)
     z = 1500
     active = []
     for i in range(50):
         y = i * 21
-        p = Polygon(10**5, [(-20 + x, 500 + y),
-                            (-20 + x, 520 + y),
-                            (20 + x, 520 + y),
-                            (20 + x, 500 + y)])
+        p = Polygon(10 ** 5, [(-20 + x, 500 + y),
+                              (-20 + x, 520 + y),
+                              (20 + x, 520 + y),
+                              (20 + x, 500 + y)])
 
         active.append(p)
     active.append(p2)
-    p3 = Polygon(10**12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
+    p3 = Polygon(10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
     p3.v = Vector2D(20, 0)
     active.append(p3)
 
@@ -120,8 +122,10 @@ if __name__ == '__main__':
     print("what?")
     w.rebuild_canvas()
     print("---+++")
-    print(w.save_objs("new_test.txt"))
+    w.save_objs("new_test.txt")
     w.objects = []
     w.reload_with_json("new_test.txt")
+    print("FDSFDSFDSFDSF")
+    print(w.objects)
     print("+++---")
-    #w.mainloop()
+    # w.mainloop()
