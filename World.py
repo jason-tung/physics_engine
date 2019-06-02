@@ -122,9 +122,9 @@ if __name__ == '__main__':
     print("what?")
     w.rebuild_canvas()
     print("---+++")
-    w.save_objs("new_test.txt")
+    w.save_objs("new_test.json")
     w.objects = []
-    w.reload_with_json("new_test.txt") 
+    w.reload_with_json("new_test.json")
     print("FDSFDSFDSFDSF")
     print(w.objects)
     print("+++---")

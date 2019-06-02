@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0419b13d-0cbf-43d7-94d1-1ef6e96b51f6" name="Default Changelist" comment="" />
+    <list default="true" id="0419b13d-0cbf-43d7-94d1-1ef6e96b51f6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/World.py" beforeDir="false" afterPath="$PROJECT_DIR$/World.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_worlds/new_test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_worlds/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_worlds/world.txt" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,18 +19,13 @@
       <file leaf-file-name="World.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/World.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="126" column="39" selection-start-line="126" selection-start-column="39" selection-end-line="126" selection-end-column="39" />
+            <state relative-caret-position="496">
+              <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="new_test.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saved_worlds/new_test.txt">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="entity.py" pinned="false" current-in-tab="false">
@@ -138,11 +138,6 @@
               <item name="physics_engine" type="b2602c69:ProjectViewProjectNode" />
               <item name="physics_engine" type="462c0819:PsiDirectoryNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="physics_engine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="physics_engine" type="462c0819:PsiDirectoryNode" />
-              <item name="saved_worlds" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="physics_engine" type="b2602c69:ProjectViewProjectNode" />
@@ -473,8 +468,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/World.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="126" column="39" selection-start-line="126" selection-start-column="39" selection-end-line="126" selection-end-column="39" />
+        <state relative-caret-position="496">
+          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
