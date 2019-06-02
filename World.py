@@ -61,6 +61,18 @@ class World:
 
             self.tick += 1
 
+    def save_objs(self,*args):
+        #save to a name if providede otherwise use default name "world"
+        dump = [k.toJSON for k in self.objects]
+        savename = "world.txt" if len(args) == 0 else args[0]
+        with open("saved_worlds/" + savename, 'w') as f:
+            for item in dump:
+                sitem = str(item)
+                sitem = sitem[sitem.find("{")+1:sitem.rfind("}")]
+                f.write("%s\n" % sitem)
+
+    def reload_with_json(self, json):
+        return
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
@@ -102,4 +114,7 @@ if __name__ == '__main__':
     print(p2.points)
     print("what?")
     w.rebuild_canvas()
-    w.mainloop()
+    print("---+++")
+    print(w.save_objs("test"))
+    print("+++---")
+    #w.mainloop()

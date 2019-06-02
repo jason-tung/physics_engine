@@ -2,6 +2,7 @@ from math import sin, cos
 from maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle, segment_intersection
 from maths.vector import Vector2D
 from math import pi
+import json
 
 
 class Entity(object):
@@ -74,6 +75,10 @@ class Polygon(Entity):
 
     def __repr__(self):
         return str({'m': self.m, 'x': self.x, 'v': self.v, 'w': self.w})
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 
     def center_of_mass(self, points):
         # break into many triangles
