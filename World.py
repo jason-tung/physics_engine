@@ -23,19 +23,8 @@ class World:
     # print('FINAL', self.heap)
 
     def tick_forces(self):
-        # print(self.heap)
-        for _, i in self.heap:
-            # if i.__class__ == Torque: continue
-            i.apply()
-            # print(i, 'applied', i.obj)
-            # print(i.__dict__)
-
-        while self.heap and self.heap[0][0] <= self.tick:
-            # print(self.heap[0][0], self.tick)
-            _, quantity = heappop(self.heap)
-            # if quantity.__class__ == Torque: continue
-            quantity.apply()
-        # print('APPLIED', self.objects)
+        for i in self.objects:
+            i.tick_forces()
 
     def add_object(self, obj):
         self.objects[obj.name] = obj
