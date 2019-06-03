@@ -136,3 +136,22 @@ def find_moment_of_inertia_triangle(points, mass):
         moment_of_inertia += (median_length * multiplier) ** 2 * this_mass  # apply the parallel axis theorem MR^2
     # print(moment_of_inertia, mass)
     return moment_of_inertia
+
+
+def point_segment_distance(point, segment):
+    px = segment[1] - segment[0]
+
+    norm = px * px
+
+    u = (point - segment[0]) * px / norm
+
+    if u > 1:
+        u = 1
+    elif u < 0:
+        u = 0
+
+    x = segment[0] + u * px
+
+    dx = x - point
+
+    return dx.magnitude()

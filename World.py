@@ -4,6 +4,7 @@ from math import sin, cos
 from config import AUTO_ZOOM, RENDER_RATE
 from backend.force import *
 import dill as pickle
+from time import time
 
 
 class World:
@@ -23,21 +24,26 @@ class World:
         self.canvas.build(self.objects)
 
     def mainloop(self):
+        self.rebuild_canvas()
         while True:
             print('\n', self.tick, '\n')
+            t = time()
             for i in self.objects:
                 i.apply_forces()
                 i.apply_torques()
-
+            print("Apply forces", time() - t)
+            t = time()
             if self.tick % RENDER_RATE == 0:
                 if AUTO_ZOOM:
-                    self.canvas.build(self.objects)
+                    self.rebuild_canvas()
 
                 self.canvas.update()
+            print("Building canvas", time() - t)
             # for i in self.objects:
             #    print(i)
+            t = time()
             self.handler.tick()
-
+            print("Processing collisions", time() - t)
             self.tick += 1
 
     def save(self, path):
@@ -76,21 +82,23 @@ if __name__ == '__main__':
 
     shuffle(points)
 
-    p2 = Polygon('p2', 0.25 * 10 ** 16, points)
+    p2 = Polygon('p2', 0.25 * 10 ** 15, points)
     z = 1500
     active = []
     for i in range(50):
-        y = i * 21
-        p = Polygon(i, 10 ** 5, [(-20 + x, 500 + y),
-                              (-20 + x, 520 + y),
-                              (20 + x, 520 + y),
-                              (20 + x, 500 + y)])
+        for x in range(-100, 100, 40):
+            y = i * 21
+            p = Polygon(i, 10 ** 0, [(-20 + x, 500 + y),
+                                  (-20 + x, 520 + y),
+                                  (20 + x, 520 + y),
+                                  (20 + x, 500 + y)])
 
-        active.append(p)
+            active.append(p)
     active.append(p2)
-    p3 = Polygon('p3', 10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
+    p3 = Polygon('p3', 10 ** 15, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
     p3.v = Vector2D(20, 10)
     p4 = Polygon('p4', 10**16, [(-2000, 2000), (2000, 2000), (2000, -2000), (-2000, -2000)])
+    p4.static = True
     active.append(p3)
 
     gen_gravs(active)
@@ -101,9 +109,9 @@ if __name__ == '__main__':
     print(p2.points)
     print("what?")
     print("---+++")
-    w.save("new_test.pkl")
-    w.objects = []
-    w = w.load("new_test.pkl")
+    #w.save("new_test.pkl")
+    #w.objects = []
+    #w = w.load("new_test.pkl")
     print("FDSFDSFDSFDSF")
     print(w.objects)
     print("+++---")

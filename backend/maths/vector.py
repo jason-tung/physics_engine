@@ -67,6 +67,13 @@ class Vector2D:
     def cross(self, other):
         return self.x * other.y - self.y * other.x
 
+    def crossXY(self, other):
+        x0 = self.x
+        x1 = self.y
+        # x1y0 = x1 * other.x
+        # x0y1 = x0 * other.y
+        return Vector2D(x1 * other.cross(self), x0 * self.cross(other))
+
     def magnitude(self):
 
         return (self.x ** 2 + self.y ** 2) ** 0.5
