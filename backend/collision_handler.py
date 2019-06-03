@@ -50,7 +50,7 @@ class Handler:
                 else:
                     if point.x > 0:
                         w *= -1
-                return vec, w * 0
+                return vec, w
 
 
 
@@ -80,8 +80,7 @@ class Handler:
             return True
 
     def iterate_forces(self):
-
-        objs = list(self.objects.values())
+        objs = self.objects
 
         for i in range(len(objs)):
             for v_vect, w in [(objs[i].v, objs[i].w),

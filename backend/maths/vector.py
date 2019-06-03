@@ -98,8 +98,10 @@ class Vector2D:
         # return proj_other (self)
         # other -> u
         # self -> v
-        return (other * self) / self.magnitude() * self.unit()
-
+        try:
+            return (other * self) / self.magnitude() * self.unit()
+        except ZeroDivisionError:
+            return Vector2D()
 
 
 class PseudoVector:

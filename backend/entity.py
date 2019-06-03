@@ -47,6 +47,26 @@ class Entity:
     def __hash__(self):
         return id(self)
 
+    def apply_forces(self):
+        remaining_forces = []
+        while self.forces:
+            frc = self.forces.pop()
+            i = frc()
+            if i is not None:
+                self.v += i / self.m
+                remaining_forces.append(frc)
+        self.forces = remaining_forces
+
+    def apply_torques(self):
+        remaining_torques = []
+        while self.torques:
+            trq = self.torques.pop()
+            i = trq()
+            if i is not None:
+                self.w += i / self.m
+                remaining_torques.append(trq)
+        self.torques = remaining_torques
+
 
 class Polygon(Entity, hull.ConvexHull):
 

@@ -1,9 +1,8 @@
 from backend.collision_handler import Handler
 from frontend.canvas import Canvas
 from math import sin, cos
-from heapq import *
 from config import AUTO_ZOOM, RENDER_RATE
-from backend.quantity import *
+from backend.force import *
 import dill as pickle
 
 
@@ -11,36 +10,28 @@ class World:
 
     def __init__(self):
 
-        self.objects = {}
+        self.objects = []
         self.canvas = Canvas()
         self.handler = Handler(self)
         self.handler.objects = self.objects
         self.tick = 0
 
-    def add_force(self, quantity: [Torque, Force]):
-        heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
-
-    # print('FINAL', self.heap)
-
-    def tick_forces(self):
-        for i in self.objects:
-            i.tick_forces()
-
     def add_object(self, obj):
-        self.objects[obj.name] = obj
+        self.objects.append(obj)
 
     def rebuild_canvas(self):
-        self.canvas.build(self.objects.values())
+        self.canvas.build(self.objects)
 
     def mainloop(self):
         while True:
             print('\n', self.tick, '\n')
-            self.tick_forces()
-            print(self.heap)
+            for i in self.objects:
+                i.apply_forces()
+                i.apply_torques()
 
             if self.tick % RENDER_RATE == 0:
                 if AUTO_ZOOM:
-                    self.canvas.build(self.objects.values())
+                    self.canvas.build(self.objects)
 
                 self.canvas.update()
             # for i in self.objects:
@@ -66,7 +57,7 @@ class World:
 
 
 if __name__ == '__main__':
-    from backend.quantity import Gravity
+    from backend.force import Gravity
     from backend.maths.vector import Vector2D
     from backend.entity import Polygon
 
@@ -98,12 +89,12 @@ if __name__ == '__main__':
         active.append(p)
     active.append(p2)
     p3 = Polygon('p3', 10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
-    p3.v = Vector2D(-20, 10)
+    p3.v = Vector2D(20, 10)
+    p4 = Polygon('p4', 10**16, [(-2000, 2000), (2000, 2000), (2000, -2000), (-2000, -2000)])
     active.append(p3)
 
-    for g in gen_gravs(active):
-        w.add_heap_unit(g)
-
+    gen_gravs(active)
+    active.append(p4)
     for i in active:
         w.add_object(i)
     print(p1.points)
