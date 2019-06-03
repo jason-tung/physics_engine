@@ -5,6 +5,7 @@ from heapq import *
 from config import AUTO_ZOOM, RENDER_RATE
 from backend.quantity import *
 import dill as pickle
+import pygame
 
 
 class World:
@@ -46,6 +47,7 @@ class World:
 
     def mainloop(self):
         while True:
+            pygame.event.get()
             print('\n', self.tick, '\n')
             self.tick_forces()
             print(self.heap)
@@ -84,10 +86,10 @@ if __name__ == '__main__':
 
     w = World()
     x = 6
-    p1 = Polygon('p1', 10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
-    p3 = Polygon('p3', 10000, [(-20 - x, 511), (-20 - x, 521), (0 - x, 521), (0 - x, 511)])
+    # p1 = Polygon('p1', 10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
+    # p3 = Polygon('p3', 10000, [(-20 - x, 511), (-20 - x, 521), (0 - x, 521), (0 - x, 511)])
     points = []
-    radius = 500
+    radius = 10000
     n_sides = 50
     from math import pi
 
@@ -98,34 +100,47 @@ if __name__ == '__main__':
     shuffle(points)
 
     p2 = Polygon('p2', 0.25 * 10 ** 16, points)
+
     z = 1500
     active = []
-    for i in range(50):
-        y = i * 21
-        p = Polygon(i, 10 ** 5, [(-20 + x, 500 + y),
-                              (-20 + x, 520 + y),
-                              (20 + x, 520 + y),
-                              (20 + x, 500 + y)])
+    # for i in range(50):
+    #     y = i * 21
+    #     p = Polygon(i, 10 ** 5, [(-20 + x, 500 + y),
+    #                           (-20 + x, 520 + y),
+    #                           (20 + x, 520 + y),
+    #                           (20 + x, 500 + y)])
+    #
+    #     active.append(p)
+    box1 = Polygon('box1', 2, [(-5000,10010),(5000,10510),(-5000,10510),(5000,10010)])
+    box2 = Polygon('box2', 2, [(-800, 12010), (-600, 10510), (-800, 10510), (-600, 12010)])
+    box3 = Polygon('box3', 2, [(800, 12010), (600, 10510), (800, 10510), (600, 12010)])
+    box4 = Polygon('box4', 2, [(-1000, 12010), (1000, 12210), (-1000, 12210), (1000, 12010)])
+    box5 = Polygon('box5', 2, [(-500, 12710), (500, 12210), (-500, 12210), (500, 12710),(0, 13210)])
 
-        active.append(p)
+    # box1 = Polygon('box1', 2, [(-5000, 10010), (5000, 10510), (-5000, 10510), (5000, 10010)])
     active.append(p2)
-    p3 = Polygon('p3', 10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
-    p3.v = Vector2D(-20, 10)
-    active.append(p3)
+    active.append(box1)
+    active.append(box2)
+    active.append(box3)
+    active.append(box4)
+    active.append(box5)
+    # p3 = Polygon('p3', 10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
+    # p3.v = Vector2D(-20, 10)
+    # active.append(p3)
 
     for g in gen_gravs(active):
         w.add_heap_unit(g)
 
     for i in active:
         w.add_object(i)
-    print(p1.points)
-    print(p2.points)
-    print("what?")
-    print("---+++")
+    # print(p1.points)
+    # print(p2.points)
+    # print("what?")
+    # print("---+++")
     w.save("new_test.pkl")
     w.objects = []
     w = w.load("new_test.pkl")
-    print("FDSFDSFDSFDSF")
-    print(w.objects)
-    print("+++---")
+    # print("FDSFDSFDSFDSF")
+    # print(w.objects)
+    # print("+++---")
     w.mainloop()
