@@ -1,5 +1,5 @@
 from config import moment_of_inertia_plates
-from maths.vector import Vector2D
+from backend.maths.vector import Vector2D
 
 
 def apollonius(a, b, c):
@@ -32,6 +32,28 @@ def find_com(points, masses):
         y_sum += mass * y
 
     return x_sum / M, y_sum / M
+
+
+def center_of_mass(points):
+    """
+    Computes the center of mass of a set of points by breaking it into a number of triangles
+    :param points:
+    :return: center of mass, area of points
+    """
+    # break into many triangles
+    # each point is part of two triangles
+    cor = [sum(points) / len(points)]
+    mass_points = []
+    area = 0
+    for i in range(len(points) - 1):
+        triangle = cor + points[i:i + 2]
+        # print(triangle)
+        mass_points.append(build_triangle_point_mass(triangle))
+        area += shoelace_area(triangle)
+        # print(triangle, area)
+    mass_points.append(build_triangle_point_mass(cor + [points[-1], points[0]]))
+    area += shoelace_area(cor + [points[-1], points[0]])
+    return Vector2D(*find_com(*zip(*mass_points))), area
 
 
 def shoelace_area(points):

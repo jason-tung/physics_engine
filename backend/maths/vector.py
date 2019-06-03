@@ -48,11 +48,24 @@ class Vector2D:
         ret = [self.x, self.y]
         return ret[index]
 
+    def __repr__(self):
+        return f'<{self.x:.2f}, {self.y:.2f}>'
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+    # can be sorted lexicographically
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
-    def __repr__(self):
-        return f'<{self.x:.2f}, {self.y:.2f}>'
+    def __lt__(self, other):
+        return (self.x, self.y).__lt__((other.x, other.y))
+
+    def __gt__(self, other):
+        return (self.x, self.y).__gt__((other.x, other.y))
+
+    def cross(self, other):
+        return self.x * other.y - self.y * other.x
 
     def magnitude(self):
 

@@ -11,7 +11,7 @@ class World:
 
     def __init__(self):
 
-        self.objects = []
+        self.objects = {}
         self.canvas = Canvas()
         self.handler = Handler(self)
         self.handler.objects = self.objects
@@ -39,10 +39,10 @@ class World:
         # print('APPLIED', self.objects)
 
     def add_object(self, obj):
-        self.objects.append(obj)
+        self.objects[obj.name] = obj
 
     def rebuild_canvas(self):
-        self.canvas.build(self.objects)
+        self.canvas.build(self.objects.values())
 
     def mainloop(self):
         while True:
@@ -52,7 +52,7 @@ class World:
 
             if self.tick % RENDER_RATE == 0:
                 if AUTO_ZOOM:
-                    self.canvas.build(self.objects)
+                    self.canvas.build(self.objects.values())
 
                 self.canvas.update()
             # for i in self.objects:
@@ -79,13 +79,13 @@ class World:
 
 if __name__ == '__main__':
     from backend.quantity import Gravity
-    from maths.vector import Vector2D
-    from random import randint
+    from backend.maths.vector import Vector2D
+    from backend.entity import Polygon
 
     w = World()
     x = 6
-    p1 = Polygon(10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
-    p3 = Polygon(10000, [(-20 - x, 511), (-20 - x, 521), (0 - x, 521), (0 - x, 511)])
+    p1 = Polygon('p1', 10000, [(-10, 500), (-10, 510), (10, 510), (10, 500)])
+    p3 = Polygon('p3', 10000, [(-20 - x, 511), (-20 - x, 521), (0 - x, 521), (0 - x, 511)])
     points = []
     radius = 500
     n_sides = 50
@@ -93,21 +93,24 @@ if __name__ == '__main__':
 
     for theta in range(0, 360, 360 // n_sides):
         points.append([cos(pi / 180 * theta) * radius, sin(pi / 180 * theta) * radius])
+    from random import shuffle
 
-    p2 = Polygon(0.5 * 10 ** 16, points)
+    shuffle(points)
+
+    p2 = Polygon('p2', 0.25 * 10 ** 16, points)
     z = 1500
     active = []
     for i in range(50):
         y = i * 21
-        p = Polygon(10 ** 5, [(-20 + x, 500 + y),
+        p = Polygon(i, 10 ** 5, [(-20 + x, 500 + y),
                               (-20 + x, 520 + y),
                               (20 + x, 520 + y),
                               (20 + x, 500 + y)])
 
         active.append(p)
     active.append(p2)
-    p3 = Polygon(10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
-    p3.v = Vector2D(20, 0)
+    p3 = Polygon('p3', 10 ** 12, [(-150, 600), (-100, 600), (-100, 700), (-150, 700)])
+    p3.v = Vector2D(-20, 10)
     active.append(p3)
 
     for g in gen_gravs(active):
@@ -118,7 +121,6 @@ if __name__ == '__main__':
     print(p1.points)
     print(p2.points)
     print("what?")
-    w.rebuild_canvas()
     print("---+++")
     w.save("new_test.pkl")
     w.objects = []

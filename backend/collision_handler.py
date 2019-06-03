@@ -1,13 +1,5 @@
-from collections import defaultdict
-from maths.geometry import segment_intersection
 from backend.entity import Polygon
-from backend.quantity import Force, Torque
-from maths.vector import Vector2D
-from math import sin, cos
-from itertools import chain
-from debug_tools.collision import assert_collisions
-from functools import lru_cache
-from collections import deque
+from backend.maths.vector import Vector2D
 
 
 class Handler:
@@ -16,8 +8,8 @@ class Handler:
         # enqueue all lasting forces here
         # for each object compute all forces acting on it
         # get a net force
-        self.objects = []
         self.world = world
+        self.objects = world.objects
 
     def tick(self):
         return self.iterate_forces()
@@ -27,7 +19,8 @@ class Handler:
         # return the forces acted on object one by object two
         # first check for possible collision
 
-        if obj1.m > 10: print(obj1)
+        if obj1.m > 10:
+            print(obj1)
 
         inters = obj1.intersections(obj2)
 
@@ -88,27 +81,29 @@ class Handler:
 
     def iterate_forces(self):
 
-        for i in range(len(self.objects)):
-            for v_vect, w in [(self.objects[i].v, self.objects[i].w),
-                              (Vector2D(), self.objects[i].w),
-                              (self.objects[i].v, 0)]:
-                # print(self.objects)
-                orig_x = self.objects[i].x
-                orig_o = self.objects[i].o
-                self.objects[i].x += v_vect
-                self.objects[i].o += w
+        objs = list(self.objects.values())
+
+        for i in range(len(objs)):
+            for v_vect, w in [(objs[i].v, objs[i].w),
+                              (Vector2D(), objs[i].w),
+                              (objs[i].v, 0)]:
+                # print(objs)
+                orig_x = objs[i].x
+                orig_o = objs[i].o
+                objs[i].x += v_vect
+                objs[i].o += w
                 collision = False
-                obj1 = self.objects[i]
-                for j in range(len(self.objects)):
+                obj1 = objs[i]
+                for j in range(len(objs)):
                     if i == j:
                         continue
-                    obj2 = self.objects[j]
+                    obj2 = objs[j]
 
                     collision |= self.compute(obj1, obj2)
 
                 if collision:
-                    self.objects[i].x = orig_x
-                    self.objects[i].o = orig_o
+                    objs[i].x = orig_x
+                    objs[i].o = orig_o
                 else:
                     break
                     
