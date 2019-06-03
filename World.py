@@ -4,9 +4,7 @@ from math import sin, cos
 from heapq import *
 from config import AUTO_ZOOM, RENDER_RATE
 from backend.quantity import *
-import json
-from backend.obj_encoder import MyEncoder
-from debug_tools.collision import assert_collisions
+import dill as pickle
 
 
 class World:
@@ -63,20 +61,20 @@ class World:
 
             self.tick += 1
 
-    def save_objs(self, *args):
-        # save to a name if providede otherwise use default name "world"
-        savename = "world.txt" if len(args) == 0 else args[0]
-        with open("saved_worlds/" + savename, 'w') as f:
-            json.dump(self.objects, f, cls=MyEncoder)
+    def save(self, path):
+        self.canvas = None
+        with open(path, 'wb') as f:
+            pickle.dump(self, f)
+        self.canvas = Canvas()
+        self.rebuild_canvas()
 
-    def reload_with_json(self, filename):
-        with open("saved_worlds/" + filename) as f:
-            data = json.loads(f.read())
-        for obj in data:
-            # print("===")
-            # print(obj)
-            self.add_object(Polygon(obj['m'],obj['points']))
-        # return
+    @classmethod
+    def load(cls, path):
+        with open(path, 'rb') as f:
+            world = pickle.load(f)
+            world.canvas = Canvas()
+            world.rebuild_canvas()
+            return world
 
 
 if __name__ == '__main__':
@@ -122,10 +120,10 @@ if __name__ == '__main__':
     print("what?")
     w.rebuild_canvas()
     print("---+++")
-    w.save_objs("new_test.json")
+    w.save("new_test.pkl")
     w.objects = []
-    w.reload_with_json("new_test.json")
+    w = w.load("new_test.pkl")
     print("FDSFDSFDSFDSF")
     print(w.objects)
     print("+++---")
-    # w.mainloop()
+    w.mainloop()
