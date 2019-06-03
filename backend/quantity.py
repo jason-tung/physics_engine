@@ -23,7 +23,8 @@ class Force(Quantity):
 
     def __init__(self, object, force, n_ticks, applier=None):
 
-        if n_ticks == 0: raise ValueError("duration of force cannot be 0")
+        if n_ticks == 0:
+            raise ValueError("duration of force cannot be 0")
         super(Force, self).__init__()
         self.obj = object
         self.applier = applier

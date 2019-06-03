@@ -1,6 +1,4 @@
 from math import sin, cos
-from backend.maths.geometry import build_triangle_point_mass, shoelace_area, find_com, find_moment_of_inertia_triangle, \
-    segment_intersection
 from backend.maths.vector import Vector2D
 from math import pi
 from backend.convex import hull
@@ -59,7 +57,6 @@ class Polygon(Entity, hull.ConvexHull):
 
     def __repr__(self):
         return str({'m': self.m, 'x': self.x, 'v': self.v, 'w': self.w})
-    
 
 
 if __name__ == '__main__':

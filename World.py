@@ -15,10 +15,9 @@ class World:
         self.canvas = Canvas()
         self.handler = Handler(self)
         self.handler.objects = self.objects
-        self.heap = []
         self.tick = 0
 
-    def add_heap_unit(self, quantity: [Torque, Force]):
+    def add_force(self, quantity: [Torque, Force]):
         heappush(self.heap, (self.tick + quantity.n_ticks, quantity))
 
     # print('FINAL', self.heap)

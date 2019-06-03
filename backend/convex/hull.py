@@ -5,16 +5,6 @@ from backend.maths.vector import Vector2D
 from math import pi
 from backend.convex import monotone_chain
 
-# class Circle(Entity):
-#
-#     def __init__(self, mass, center, radius):
-#         super(Circle, self).__init__(mass)
-#         self.radius = radius
-#         self.center = center
-#
-#     def collision(self, other): # circles only
-#         return ((self.x - other.x)**2+(self.y - other.y)**2)**.5 <= max(self.radius, other.radius)
-
 
 class ConvexHull:
 
