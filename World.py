@@ -5,6 +5,7 @@ from config import AUTO_ZOOM, RENDER_RATE
 from backend.force import *
 import dill as pickle
 from time import time
+import pygame
 
 
 class World:
@@ -26,24 +27,25 @@ class World:
     def mainloop(self):
         self.rebuild_canvas()
         while True:
-            print('\n', self.tick, '\n')
+            pygame.event.get()
+            # print('\n', self.tick, '\n')
             t = time()
             for i in self.objects:
                 i.apply_forces()
                 i.apply_torques()
-            print("Apply forces", time() - t)
+            # print("Apply forces", time() - t)
             t = time()
             if self.tick % RENDER_RATE == 0:
                 if AUTO_ZOOM:
                     self.rebuild_canvas()
 
                 self.canvas.update()
-            print("Building canvas", time() - t)
+            # print("Building canvas", time() - t)
             # for i in self.objects:
             #    print(i)
             t = time()
             self.handler.tick()
-            print("Processing collisions", time() - t)
+            # print("Processing collisions", time() - t)
             self.tick += 1
 
     def save(self, path):
@@ -105,14 +107,14 @@ if __name__ == '__main__':
     active.append(p4)
     for i in active:
         w.add_object(i)
-    print(p1.points)
-    print(p2.points)
-    print("what?")
-    print("---+++")
+    # print(p1.points)
+    # print(p2.points)
+    # print("what?")
+    # print("---+++")
     #w.save("new_test.pkl")
     #w.objects = []
     #w = w.load("new_test.pkl")
-    print("FDSFDSFDSFDSF")
-    print(w.objects)
-    print("+++---")
+    # print("FDSFDSFDSFDSF")
+    # print(w.objects)
+    # print("+++---")
     w.mainloop()
