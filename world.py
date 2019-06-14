@@ -89,7 +89,8 @@ class World:
 
         for b in self.bodies:
             if b.mass == 10000:
-                continue
+                ...
+                # continue
 
             b.position += dt * b.velocity
             b.rotation += dt * b.angular_velocity
@@ -101,14 +102,15 @@ if __name__ == '__main__':
 
     from vector import Vector2D
 
-    w = World(Vector2D(0, -10), 100)
-    b1 = Body(10000, Vector2D(50, 20))
+    w = World(Vector2D(0, -2), 100)
+    b1 = Body(10000, Vector2D(50, 40))
 
     b1.position = Vector2D(0, -0.5 * b1.width.y)
 
     w.add(b1)
 
     b2 = Body(10, Vector2D(10, 10))
+    b2.velocity = Vector2D(0, -1)
     b2.position = Vector2D(0, 30)
     w.add(b2)
 

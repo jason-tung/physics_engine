@@ -145,7 +145,7 @@ class Arbiter:
             Pn = dPn * c.normal
 
             b1.velocity -= b1.inv_mass * Pn
-            b2.angular_velocity -= b1.invI * c.r2.cross(Pn)
+            b2.angular_velocity -= b1.invI * c.r1.cross(Pn)
 
             b2.velocity += b2.inv_mass * Pn
             b2.angular_velocity += b2.invI * c.r2.cross(Pn)

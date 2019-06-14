@@ -66,7 +66,7 @@ class Canvas:
 
         # This limits the while loop to a max of 10 times per second.
         # Leave this out and we will use all CPU we can.
-        clock.tick(10)
+        # clock.tick(10)
 
         # All drawing code happens after the for loop and but
         # inside the main while done==False loop.
