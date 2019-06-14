@@ -79,6 +79,7 @@ class World:
 
         for joint in self.joints:
             joint.pre_step(inv_dt)
+
         for i in range(self.iterations):
 
             for arb in self.arbiters.values():
@@ -106,7 +107,7 @@ if __name__ == '__main__':
     b1 = Body(10000, Vector2D(50, 40))
 
     b1.position = Vector2D(0, -0.5 * b1.width.y)
-    b1.rotation = -0.1
+    # b1.rotation = 0.1
     w.add(b1)
 
     b2 = Body(10, Vector2D(10, 10))
@@ -121,4 +122,4 @@ if __name__ == '__main__':
     for i in range(1000000):
         # print(w.arbiters)
         # print(b2.position, b1.position)
-        w.step(0.1)
+        w.step(0.01)

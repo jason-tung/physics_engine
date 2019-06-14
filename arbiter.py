@@ -60,10 +60,9 @@ class Arbiter:
                     k = j
                     break
             if k > -1:
-                c = merged_contacts[i]
+                # c = merged_contacts[i]
                 cOld = self.contacts[k]
-                merged_contacts[i] = cNew
-                c = merged_contacts[i]
+                c = merged_contacts[i] = cNew
 
                 if WARM_STARTING:
                     c.pn = cOld.pn
@@ -130,8 +129,10 @@ class Arbiter:
             c.r1 = c.position - b1.position
             c.r2 = c.position - b2.position
 
+            # issue is existing here
             dv = b2.velocity - c.r2.cross(b2.angular_velocity) - b1.velocity + c.r1.cross(b1.angular_velocity)
-
+            print(b1.velocity, b2.velocity, c.r1, c.r2, b1.angular_velocity, b2.angular_velocity)
+            print('DV', dv)
             vn = dv * c.normal
 
             dPn = c.mass_normal * (-vn + c.bias)
@@ -146,7 +147,7 @@ class Arbiter:
             Pn = dPn * c.normal
 
             b1.velocity -= b1.inv_mass * Pn
-            b2.angular_velocity -= b1.invI * c.r1.cross(Pn)
+            b1.angular_velocity -= b1.invI * c.r1.cross(Pn)
 
             b2.velocity += b2.inv_mass * Pn
             b2.angular_velocity += b2.invI * c.r2.cross(Pn)
