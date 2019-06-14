@@ -213,7 +213,6 @@ def collide(contacts, bodyA, bodyB):
         negEdge = EDGE2
         posEdge = EDGE4
         compute_incident_edge(incidentEdge, hB, posB, RotB, frontNormal)
-    ###
 
     elif axis == FACE_B_X:
         frontNormal = -normal

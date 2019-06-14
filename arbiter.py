@@ -63,6 +63,7 @@ class Arbiter:
                 c = merged_contacts[i]
                 cOld = self.contacts[k]
                 merged_contacts[i] = cNew
+                c = merged_contacts[i]
 
                 if WARM_STARTING:
                     c.pn = cOld.pn
@@ -111,7 +112,7 @@ class Arbiter:
             if ACCUMULATE_IMPULSES:
                 P = c.pn * c.normal + c.pt * tangent
                 self.b1.velocity -= self.b1.inv_mass * P
-                self.b1.angular_velocity -= self.b1.invI *  r1.cross(P)
+                self.b1.angular_velocity -= self.b1.invI * r1.cross(P)
 
                 self.b2.velocity += self.b2.inv_mass * P
                 self.b2.angular_velocity += self.b2.invI * r2.cross(P)
