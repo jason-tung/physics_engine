@@ -217,24 +217,24 @@ def collide(contacts, bodyA, bodyB):
 
     elif axis == FACE_B_X:
         frontNormal = -normal
-        front = posA * frontNormal + hB.x
+        front = posB * frontNormal + hB.x
         sideNormal = RotB.col2
         side = posB * sideNormal
         negSide = -side + hB.y
         posSide = side + hB.y
         negEdge = EDGE3
         posEdge = EDGE1
-        compute_incident_edge(incidentEdge, hB, posB, RotB, frontNormal)
+        compute_incident_edge(incidentEdge, hA, posA, RotA, frontNormal)
     elif axis == FACE_B_Y:
         frontNormal = -normal
         front = posB * frontNormal + hB.y
         sideNormal = RotB.col1
-        side = posA * sideNormal
+        side = posB * sideNormal
         negSide = -side + hB.x
         posSide = side + hB.x
         negEdge = EDGE2
         posEdge = EDGE4
-        compute_incident_edge(incidentEdge, hB, posB, RotB, frontNormal)
+        compute_incident_edge(incidentEdge, hA, posA, RotA, frontNormal)
     else:
         assert False
 
