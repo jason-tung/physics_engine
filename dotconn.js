@@ -42,9 +42,10 @@ function getInfo(mode) {
     }
     else if (mode === "gravity") {
         instr.innerHTML = "Click and drag to create a ball with an initial velocity vector." +
-            " The velocity vector is represented with an arrow," +
+            " The velocity vector is represented with a black arrow," +
             " and each ball can have an individual mass determined by the input on the right." +
-            " There is also an input that will affect the gravitational constant" +
+            " There is also an input that will affect the gravitational constant." +
+            " The acceleration vector is represented by a red arrow." +
             " Click go to start/resume the simulation." +
             " The simulation can be paused and restarted at any time. " +
             "A table on the right will appear after creating your first ball. Note that the objects have to be pretty close to demonstrate visible gravity, as this is how gravity works...";
