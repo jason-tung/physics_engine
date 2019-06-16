@@ -22,6 +22,8 @@ every particle has some set of tracked variables displayed in a table on the rig
 
 ## limitations
 
+firstly, it is very hard to design a website that perfectly fits on every monitor, so should you find yourself missing elements because your monitor is not wide enough, there will be a scrollbar at the bottom to see the other elements (probably will be table values, if anything)
+
 gravity vectors are absolutely massive because of how it scales with r^2.
 I have to freeze the balls once they collide in the gravity simulation because otherwise they'd shoot into infinity due to the limitations of what a bound is in SVG/JS. 
 
