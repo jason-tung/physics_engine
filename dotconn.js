@@ -136,6 +136,8 @@ function collision_mdown(e) {
             circles.push(newcircle);
             c.append(newcircle);
             create_pointer(e);
+            console.log(circles[circles.length-1]);
+            chart_append(circles.length-1);
             if (intervalId) {
                 clearInterval(intervalId);
             }
@@ -202,6 +204,7 @@ function updateballs() {
         updatevar(circ, "cx", "cx", "vx", .02);
         updatevar(circ, "cy", "cy", "vy", .02);
         collision_detect(i);
+        chart_update(i);
     }
     update_pointer();
     requestID = window.requestAnimationFrame(updateballs);
@@ -256,25 +259,32 @@ function collision_detect(j) {
 // </table>
 var tbod = document.getElementById("tbod");
 
-function chartele(i){
+function chart_append(i){
     var circle = circles[i];
     var tr = document.createElement("tr");
     var th = document.createElement("th");
-    th.innerHTML = i + 1;
+    th.innerHTML = i;
     var x = document.createElement("td");
     x.innerHTML = Number(circle.getAttribute("cx")).toFixed(2);
+    x.setAttribute("id","cx"+i);
     var y = document.createElement("td");
     y.innerHTML = Number(circle.getAttribute("cy")).toFixed(2);
-    var vx = document.createElement("td");
-    vx.innerHTML = Number(circle.getAttribute("vx")).toFixed(2);
-    var vy = document.createElement("td");
-    vy.innerHTML = Number(circle.getAttribute("vy")).toFixed(2);
-    var p = document.createElement("td");
-    p.innerHTML = Number(Math.pow(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2),.5) * Number(circle.getAttribute("mass"))).toFixed(2);
+    y.setAttribute("id","cy"+i);
     var m = document.createElement("td");
     m.innerHTML = Number(circle.getAttribute("mass")).toFixed(2);
+    m.setAttribute("id","m"+i);
+    var vx = document.createElement("td");
+    vx.innerHTML = Number(circle.getAttribute("vx")).toFixed(2);
+    vx.setAttribute("id","vx"+i);
+    var vy = document.createElement("td");
+    vy.innerHTML = Number(circle.getAttribute("vy")).toFixed(2);
+    vy.setAttribute("id","vy"+i);
+    var p = document.createElement("td");
+    p.setAttribute("id","p"+i);
+    p.innerHTML = Number(Math.pow(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2),.5) * Number(circle.getAttribute("mass"))).toFixed(2);
     var KE = document.createElement("td");
     KE.innerHTML = Number(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2) / Number(circle.getAttribute("mass"))).toFixed(2);
+    KE.setAttribute("id","ke"+i);
     tr.appendChild(th);
     tr.appendChild(x);
     tr.appendChild(y);
@@ -285,3 +295,20 @@ function chartele(i){
     tr.appendChild(KE);
     tbod.appendChild(tr);
 }
+
+function update_helper(i, type ){
+    var circle = circles[i];
+    // console.log(type+i);
+    document.getElementById(type+i).innerHTML=Number(circle.getAttribute(type)).toFixed(2);
+}
+
+function chart_update(i){
+    var circle = circles[i];
+    circle.setAttribute("p",Number(Math.pow(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2),.5) * Number(circle.getAttribute("mass"))));
+    circle.setAttribute("ke",Number(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2) / Number(circle.getAttribute("mass"))));
+    var update_types = ["cx","cy","vx","vy","p","ke"];
+    for (var j =0; j < update_types.length; j++){
+        update_helper(i,update_types[j]);
+    }
+}
+
