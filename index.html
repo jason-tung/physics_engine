@@ -5,7 +5,7 @@
         border: 1px solid black
     }
 </style>
-<div class="container mt-4">
+<div class="container-fluid mt-4 ml-3 mr-3 justify-content-center">
     <div class="row justify-content-center">
         <div class="col-3 text-center mt-4">
             <div class="row justify-content-center">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-7 text-center">
+        <div class="col-5 text-center">
             <div class="row justify-content-center">
                 <h1 id="bighead"> kinematics </h1>
             </div>
@@ -42,17 +42,34 @@
                 </svg>
             </div>
         </div>
-        <div class="col-2 text-center mt-4">
+        <div class="col-4 text-center mt-4">
             <div id="spec_inputs">
 
             </div>
             <button class="btn btn-dark mt-2" id="restart">restart</button>
-            <button class="btn btn-dark" id="go">go</button>
+            <button class="btn btn-dark mt-2" id="go">go</button>
             <button class="btn btn-dark mt-2" id="pause">pause</button>
-            <div id="results"></div>
+            <table class="table mt-2">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">x</th>
+                    <th scope="col">y</th>
+                    <th scope="col">m</th>
+                    <th scope="col">vx</th>
+                    <th scope="col">vy</th>
+                    <th scope="col">p</th>
+                    <th scope="col">KE</th>
+                </tr>
+                </thead>
+                <tbody id="tbod">
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
 </body>
 <script src="dotconn.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"

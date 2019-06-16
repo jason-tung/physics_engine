@@ -5,7 +5,6 @@ var go = document.getElementById("go");
 var bighead = document.getElementById("bighead");
 var info = document.getElementById("info");
 var instr = document.getElementById("instr");
-var results = document.getElementById("results");
 var pause = document.getElementById("pause");
 var spec = document.getElementById("spec_inputs");
 var circles = [];
@@ -232,4 +231,57 @@ function collision_detect(j) {
         }
     }
 }
+//
+// <table class="table">
+//   <thead>
+//     <tr>
+//       <th scope="col">#</th>
+//       <th scope="col">x</th>
+//       <th scope="col">y</th>
+//       <th scope="col">m</th>
+//       <th scope="col">vx</th>
+//       <th scope="col">vy</th>
+//       <th scope="col">p</th>
+//       <th scope="col">KE</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <tr>
+//       <th scope="row">1</th>
+//       <td>Mark</td>
+//       <td>Otto</td>
+//       <td>@mdo</td>
+//     </tr>
+//   </tbody>
+// </table>
+var tbod = document.getElementById("tbod");
 
+function chartele(i){
+    var circle = circles[i];
+    var tr = document.createElement("tr");
+    var th = document.createElement("th");
+    th.innerHTML = i + 1;
+    var x = document.createElement("td");
+    x.innerHTML = Number(circle.getAttribute("cx")).toFixed(2);
+    var y = document.createElement("td");
+    y.innerHTML = Number(circle.getAttribute("cy")).toFixed(2);
+    var vx = document.createElement("td");
+    vx.innerHTML = Number(circle.getAttribute("vx")).toFixed(2);
+    var vy = document.createElement("td");
+    vy.innerHTML = Number(circle.getAttribute("vy")).toFixed(2);
+    var p = document.createElement("td");
+    p.innerHTML = Number(Math.pow(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2),.5) * Number(circle.getAttribute("mass"))).toFixed(2);
+    var m = document.createElement("td");
+    m.innerHTML = Number(circle.getAttribute("mass")).toFixed(2);
+    var KE = document.createElement("td");
+    KE.innerHTML = Number(Math.pow(Number(circle.getAttribute("vx")),2) + Math.pow(Number(circle.getAttribute("vy")),2) / Number(circle.getAttribute("mass"))).toFixed(2);
+    tr.appendChild(th);
+    tr.appendChild(x);
+    tr.appendChild(y);
+    tr.appendChild(m);
+    tr.appendChild(vx);
+    tr.appendChild(vy);
+    tr.appendChild(p);
+    tr.appendChild(KE);
+    tbod.appendChild(tr);
+}
