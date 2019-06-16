@@ -6,8 +6,8 @@ var bighead = document.getElementById("bighead");
 var info = document.getElementById("info");
 var instr = document.getElementById("instr");
 var results = document.getElementById("results");
-var mass = document.getElementById("mass");
 var pause = document.getElementById("pause");
+var spec = document.getElementById("spec_inputs");
 var circles = [];
 var pointers = [];
 var mode = "inelastic collisions";
@@ -26,6 +26,9 @@ function getInfo(mode) {
             "A graph on the right will appear after creating your first ball.";
         info.innerHTML = "This simulation is meant to demonstrate the properties of elastic point particles, " +
             "but for the sake of visibility, the points are instead VERY sticky balls!";
+        spec.innerHTML = "mass(kg) <input type=\"number\" class=\"form-control\" id=\"mass\" value=\"20\">";
+
+        var mass = document.getElementById("mass");
     }
 }
 
