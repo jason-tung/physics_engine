@@ -5,32 +5,44 @@
         border: 1px solid black
     }
 </style>
-<div class="container">
+<div class="container mt-4">
     <div class="row justify-content-center">
-        <h1 id="bighead"> kinematics </h1>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-2 text-center">
-            <h2>
-                Info
-            </h2>
-            <div id="info">
+        <div class="col-3 text-center mt-4">
+            <div class="row justify-content-center">
+                <h2>
+                    Instructions
+                </h2>
+                <div id="instr" class="text-left">
 
+                </div>
+            </div>
+            <div class="row">
+                <h2>
+                    Info
+                </h2>
+                <div id="info" class="text-left">
+
+                </div>
             </div>
         </div>
-        <div class="col-8 text-center">
-            <svg height="500" width="500" id="canvas" style="border: 1px solid;">
-                hello world
-                <marker id="triangle"
-                        viewBox="0 0 10 10" refX="0" refY="5"
-                        markerUnits="strokeWidth"
-                        markerWidth="4" markerHeight="3"
-                        orient="auto">
-                    <path d="M 0 0 L 10 5 L 0 10 z"/>
-                </marker>
-            </svg>
+        <div class="col-7 text-center">
+            <div class="row justify-content-center">
+                <h1 id="bighead"> kinematics </h1>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <svg height="500" width="500" id="canvas" style="border: 1px solid;">
+                    hello world
+                    <marker id="triangle"
+                            viewBox="0 0 10 10" refX="0" refY="5"
+                            markerUnits="strokeWidth"
+                            markerWidth="4" markerHeight="3"
+                            orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z"/>
+                    </marker>
+                </svg>
+            </div>
         </div>
-        <div class="col-2 text-center">
+        <div class="col-2 text-center mt-4">
             <div id="buttons">
                 mass(kg) <input type="number" class="form-control" id="mass" value="20">
                 <br>

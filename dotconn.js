@@ -4,6 +4,7 @@ var restart = document.getElementById("restart");
 var go = document.getElementById("go");
 var bighead = document.getElementById("bighead");
 var info = document.getElementById("info");
+var instr = document.getElementById("instr");
 var results = document.getElementById("results");
 var mass = document.getElementById("mass");
 var pause = document.getElementById("pause");
@@ -17,11 +18,18 @@ var intervalId;
 
 function getInfo(mode) {
     if (mode === "inelastic collisions") {
-        return "sample text collisions"
+        instr.innerHTML = "Click and drag to create a ball with an initial velocity vector." +
+            " The velocity vector is represented with an arrow," +
+            " and each ball can have an individual mass determined by the input on the right." +
+            " Click go to start/resume the simulation." +
+            " The simulation can be paused and restarted at any time. " +
+            "A graph on the right will appear after creating your first ball.";
+        info.innerHTML = "This simulation is meant to demonstrate the properties of elastic point particles, " +
+            "but for the sake of visibility, the points are instead VERY sticky balls!";
     }
 }
 
-info.innerHTML = getInfo(mode);
+getInfo(mode);
 bighead.innerHTML = mode;
 
 function getRandomColor() {
@@ -189,8 +197,8 @@ function updateballs() {
     for (var i = 0; i < circles.length; i++) {
         var circ = circles[i];
         // console.log(circ);
-        updatevar(circ, "cx", "cx", "vx", .04);
-        updatevar(circ, "cy", "cy", "vy", .04);
+        updatevar(circ, "cx", "cx", "vx", .02);
+        updatevar(circ, "cy", "cy", "vy", .02);
         collision_detect(i);
     }
     update_pointer();
@@ -206,12 +214,17 @@ function collision_detect(j) {
             var vxyj = getvel(circles[j]);
             var vxyi = getvel(circles[i]);
             if (Math.pow(xyi[0] - xyj[0], 2) + Math.pow(xyi[1] - xyj[1], 2) <= 40 * 40) {
-                var new_velcx = (vxyi[0] * circles[i].getAttribute("mass") + vxyj[0] * circles[j].getAttribute("mass")) / (circles[i].getAttribute("mass") + circles[j].getAttribute("mass"));
-                var new_velcy = (vxyi[1] * circles[i].getAttribute("mass") + vxyj[1] * circles[j].getAttribute("mass")) / (circles[i].getAttribute("mass") + circles[j].getAttribute("mass"));
+                var new_velcx = (vxyi[0] * Number(circles[i].getAttribute("mass")) + vxyj[0] * Number(circles[j].getAttribute("mass"))) / (Number(circles[i].getAttribute("mass")) + Number(circles[j].getAttribute("mass")));
+                // console.log(new_velcx);
+                var new_velcy = (vxyi[1] * Number(circles[i].getAttribute("mass")) + vxyj[1] * Number(circles[j].getAttribute("mass"))) / (Number(circles[i].getAttribute("mass")) + Number(circles[j].getAttribute("mass")));
+                // console.log(new_velcy);
                 circles[i].setAttribute("vx", new_velcx);
                 circles[i].setAttribute("vy", new_velcy);
                 circles[j].setAttribute("vx", new_velcx);
                 circles[j].setAttribute("vy", new_velcy);
+                // circles[j].remove();
+                // circles.pop(j)
+                // console.log(requestID);
             }
         }
     }
