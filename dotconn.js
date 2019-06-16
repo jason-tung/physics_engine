@@ -10,7 +10,7 @@ var spec = document.getElementById("spec_inputs");
 var circles = [];
 var pointers = [];
 var apointers = [];
-var mode = "gravity";
+var mode = "inelastic collisions";
 var requestID;
 var mass;
 var g;
@@ -28,7 +28,7 @@ function getInfo(mode) {
             " Click go to start/resume the simulation." +
             " The simulation can be paused and restarted at any time. " +
             "A table on the right will appear after creating your first ball.";
-        info.innerHTML = "This simulation is meant to demonstrate the properties of elastic point particles, " +
+        info.innerHTML = "This simulation is meant to demonstrate the properties of perfectly inelastic point particles, " +
             "but for the sake of visibility, the points are instead VERY sticky balls!";
         spec.innerHTML = "";
         thead.innerHTML = "<th scope=\"col\">#</th>\n" +
@@ -48,8 +48,8 @@ function getInfo(mode) {
             " Click go to start/resume the simulation." +
             " The simulation can be paused and restarted at any time. " +
             "A table on the right will appear after creating your first ball. Note that the objects have to be pretty close to demonstrate visible gravity, as this is how gravity works...";
-        info.innerHTML = "This simulation demonstrates gravity between two fragile objects. After two objects collide, they break and disappear into the ether!";
-        spec.innerHTML = "G(10^14 Nm^2/kg^2) <input type=\"number\" class=\"form-control mt-2\" id=\"g\" value=\"5\">";
+        info.innerHTML = "This simulation demonstrates gravity between two strange... objects. After two objects collide, they become immovable";
+        spec.innerHTML = "G(10^13 Nm^2/kg^2) <input type=\"number\" class=\"form-control mt-2\" id=\"g\" value=\"5\">";
         g = document.getElementById("g");
         thead.innerHTML = "<th scope=\"col\">#</th>\n" +
             "                    <th scope=\"col\">x</th>\n" +
@@ -330,14 +330,20 @@ function collision_detect(j) {
 }
 
 function rm(i) {
-    circles[i].remove();
-    circles.pop(i);
-    pointers[i].remove();
-    pointers.pop(i);
-    apointers[i].remove();
-    apointers.pop(i);
+    // circles[i].setAttribute("cx", 0);
+    // circles[i].setAttribute("cy", 0);
+    circles[i].setAttribute("vx", 0);
+    circles[i].setAttribute("vy", 0);
+    // circles[i].setAttribute("mass", 0);
+    circles[i].setAttribute("ax", 0);
+    circles[i].setAttribute("ay", 0);
+    // circles[i].setAttribute("fill", "white");
+    // circles[i].setAttribute("display", "none");
+    // pointers[i].setAttribute("display", "none");
+    // apointers[i].setAttribute("display", "none");
 
 }
+
 
 function gravity_collision(i) {
     for (var j = 0; j < circles.length; j++) {
@@ -346,8 +352,8 @@ function gravity_collision(i) {
             var xyj = getloc(circles[j]);
             var xyi = getloc(circles[i]);
             if (Math.pow(xyi[0] - xyj[0], 2) + Math.pow(xyi[1] - xyj[1], 2) <= 40 * 40) {
-                circles[i].setAttribute("vx",0);
-                circles[i].setAttribute("vy",0);
+                rm(i);
+                rm(j);
                 return true;
             }
         }
@@ -356,7 +362,7 @@ function gravity_collision(i) {
 }
 
 function getg() {
-    return g.value * Math.pow(10, 14)
+    return g.value * Math.pow(10, 13)
 }
 
 function update_gravity(i) {
