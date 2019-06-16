@@ -1,6 +1,6 @@
 # N-Body Inelastic Collisions and Gravity
 
-**[website here]**(http://jasontung.me/physics_project/)
+[**website here**](http://jasontung.me/physics_project/)
 
 ## what is this
 
