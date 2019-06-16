@@ -2,6 +2,8 @@
 
 [**website here**](http://jasontung.me/physics_project/)
 
+[**video here**](https://youtu.be/onnrWaH01o8)
+
 ## what is this
 
 click and drag to create balls with the initial velocity represented by the black arrow
